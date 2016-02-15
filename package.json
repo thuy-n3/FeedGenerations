@@ -1,7 +1,7 @@
 {
   "name": "universal-js-boilerplate",
   "version": "2.0.0",
-  "description": "This is a Node/Browserify/Babel/Backbone/React/etc boilerplate. To be used as an initial scaffolding tool.",
+  "description": "This is a Node/Browserify boilerplate with npm scripts that handle auto-install and help with deployments. Clone me as an initial scaffolding tool.",
   "author": "Matthew Keas (@matthiasak)",
   "license": "MIT",
   "main": "app.js",
