@@ -9,4 +9,4 @@ branches:
 notifications:
   email: false
 node_js:
-  - '5.5.0'
+  - '5'

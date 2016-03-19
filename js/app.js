@@ -20,6 +20,19 @@ import fetch from "isomorphic-fetch"
 //     })
 // }
 
+// Check for ServiceWorker support before trying to install it
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('./serviceworker.js').then(() => {
+//         // Registration was successful
+//         console.info('registration success')
+//     }).catch(() => {
+//         console.error('registration failed')
+//             // Registration failed
+//     })
+// } else {
+//     // No ServiceWorker Support
+// }
+
 import DOM from 'react-dom'
 import React, {Component} from 'react'
 

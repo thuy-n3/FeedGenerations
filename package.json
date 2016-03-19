@@ -22,7 +22,7 @@
     "ignore": "node_modules"
   },
   "engines": {
-    "node": ">=5.5.0 <6"
+    "node": ">=5.7.1 <6"
   },
   "config": {
     "squash_reset": "HEAD~1",
