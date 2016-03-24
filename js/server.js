@@ -13,7 +13,7 @@ const http = require('http')
 import socketIo from 'socket.io'
 const os = require('os')
 
-var port = (process.getuid() === 0) ? 443 : 3000
+var port = process.argv[3] || process.env.PORT || 3000 //(process.getuid() === 0) ? 443 : 3000
 
 // generate a cert/keypair on the fly
 const keys = new Promise((res, rej) => {
