@@ -22,7 +22,7 @@
         "ignore": "node_modules"
     },
     "engines": {
-        "node": ">=5.7.1 <6"
+        "node": ">=5.9 <6"
     },
     "config": {
         "squash_reset": "HEAD~1",
@@ -43,6 +43,7 @@
         "logs": "pm2 logs",
         "stop": "pm2 kill",
         "monit": "pm2 monit",
+        "top": "vtop",
         "test": "ava test/main.js",
         "bower": "bower install --allow-root",
         "postinstall": "npm-run-all bower transpile-once js-once css",
@@ -81,7 +82,8 @@
         "sane": "^1.3",
         "surge": "^0.17",
         "universal-utils": "^0.2",
-        "watchify": "^3.7"
+        "watchify": "^3.7",
+        "vtop": "^0.5"
     },
     "devDependencies": {
         "ava": ">=0.11",
