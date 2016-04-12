@@ -130,19 +130,19 @@ var SingleReceipeView = React.createClass({
 				// model = this.props.recipeMdl;
 		// console.log('componente did mount')
 		// 	debugger
-		// this.props.recipeMdl.on("change:title", function(data){
+		this.props.recipeMdl.on("sync", function(data){
 		// 	// console.log(model)
-		// 	// debugger
-		// 	component.setState({
-		// 		userRecipes:{
-		// 			title: component.props.recipeMdl.get("title"), 
-		// 			ingredients: component.props.recipeMdl.get("ingredients"), 
-		// 			instructions: component.props.recipeMdl.get("instructions"), 
-		// 			equipment: component.props.recipeMdl.get("equipment")
+			debugger
+			component.setState({ 
+				userRecipes:{
+					title: component.props.recipeMdl.get("title"), 
+					ingredients: component.props.recipeMdl.get("ingredients"), 
+					instructions: component.props.recipeMdl.get("instructions"), 
+					equipment: component.props.recipeMdl.get("equipment")
 
-		// 		}
-		// 	})
-		// })
+				}
+			})
+		})
 	},
 
 	render: function(){
@@ -156,10 +156,11 @@ var SingleReceipeView = React.createClass({
 				<Header />
 				<h3>hello!</h3>
 
-				{this.props.recipeMdl.get('title')}
+				{this.state.userRecipes.title}
 
 			</div>
 		)
+				{this.props.recipeMdl.get('title')}
 	}
 
 })
@@ -402,7 +403,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.container') )
     // singleRecipeModel_inst.on("sync", function(data){
-			DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.container') )
+		DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.container') )
 		// })
 	},
 
