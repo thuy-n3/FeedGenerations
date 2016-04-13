@@ -169,10 +169,11 @@ var SingleReceipeView = React.createClass({
 				<h4>{this.state.userRecipes.title}</h4>
 				<h6>Ingredients</h6>
 				{this.state.userRecipes.ingredients}
-				<h6>Instructions</h6>
-				{this.state.userRecipes.instructions}
 				<h6>Equipment</h6>
 				{this.state.userRecipes.equipment}
+				<h6>Instructions</h6>
+				{this.state.userRecipes.instructions}
+				
 
 			</div>
 		)
