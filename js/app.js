@@ -128,12 +128,24 @@ var SingleReceipeView = React.createClass({
 	componentDidMount: function(){
 		var component = this
 				// model = this.props.recipeMdl;
-		// console.log('componente did mount')
+		console.log('singleRecipeView mounted!', this.props.recipeMdl )
 		// 	debugger
+		if (this.props.recipeMdl.id){
+			this._setRecipeState(this)
+		}
+
 		this.props.recipeMdl.on("sync", function(data){
+			component._setRecipeState(component)
 		// 	// console.log(model)
-			debugger
-			component.setState({ 
+			//debugger
+			console.log('current-recipe --- ', component.props.recipeMdl)
+			
+		})
+	},
+
+	_setRecipeState:function(component){
+
+		component.setState({ 
 				userRecipes:{
 					title: component.props.recipeMdl.get("title"), 
 					ingredients: component.props.recipeMdl.get("ingredients"), 
@@ -142,7 +154,6 @@ var SingleReceipeView = React.createClass({
 
 				}
 			})
-		})
 	},
 
 	render: function(){
@@ -154,13 +165,19 @@ var SingleReceipeView = React.createClass({
 		return(
 			<div>
 				<Header />
-				<h3>hello!</h3>
 
-				{this.state.userRecipes.title}
+				<h4>{this.state.userRecipes.title}</h4>
+				<h6>Ingredients</h6>
+				{this.state.userRecipes.ingredients}
+				<h6>Instructions</h6>
+				{this.state.userRecipes.instructions}
+				<h6>Equipment</h6>
+				{this.state.userRecipes.equipment}
 
 			</div>
 		)
-				{this.props.recipeMdl.get('title')}
+				// {this.props.recipeMdl.get('title')}
+
 	}
 
 })
@@ -335,6 +352,12 @@ var LoginView = React.createClass({
 
 var Header = React.createClass({
 
+		_handleLogOut: function(){
+		fbRef.unauth();
+		// MyAppRtr.navigate('login', {trigger: true})
+		window.location.hash = 'login'
+	},
+
 	render: function(){
 		return(
 			<div className="headerContainer">
@@ -371,7 +394,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from LoginView")
 
-		DOM.render( <LoginView/>, document.querySelector('.container') )
+		DOM.render( <LoginView />, document.querySelector('.container') )
 
 	},
 
@@ -387,7 +410,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from RecipeLibraryView")
 
-		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid )
 
 		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.container') )
 	},
@@ -399,7 +422,7 @@ var AppRouter = BackboneFire.Router.extend({
 		console.log(fbRef.getAuth().id)
 		console.log(fbRef.getAuth())
 
-		var singleRecipeModel_inst = new SingleRecipeModel(fbRef.getAuth().uid,recipeId)
+		var singleRecipeModel_inst = new SingleRecipeModel( fbRef.getAuth().uid, recipeId)
 
 		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.container') )
     // singleRecipeModel_inst.on("sync", function(data){
