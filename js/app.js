@@ -239,15 +239,13 @@ var HomeView = React.createClass({
 
 		userRecipeCollection.create({
 			// picture: evt.target.featureImage.imageFileData,
-
 			picture: this.state.imageFileData,
-			title: evt.target.title.value,
 
-			//displayTitle: evt.target.displayTitle.value, 
-			//searchTitle: evt.target.searchTitle.value,
+			displayTitle: evt.target.displayTitle.value, 
+			searchTitle: evt.target.searchTitle.value,		
+			//title: evt.target.title.value,
 			// display_title:
-			// search_title: .toLowerCase()	
-
+			// search_title: .toLowerCase()
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value
