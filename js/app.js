@@ -34,12 +34,14 @@ var UserCollection = BackboneFire.Firebase.Collection.extend({
   	this.url = fbRef.child('users')
   }
 })
+
 var UserRecipeCollection = BackboneFire.Firebase.Collection.extend({
 	url: '',
 	initialize: function(uid , query){
 		if (query !=undefined)	{	
 			this.url = fbRef.child('users').child(uid).child('recipes').orderByChild('title').equalTo(query)
 			console.log('url',this.url)
+
 		}
 		else{
 			this.url = fbRef.child('users').child(uid).child('recipes')
@@ -240,6 +242,12 @@ var HomeView = React.createClass({
 
 			picture: this.state.imageFileData,
 			title: evt.target.title.value,
+
+			//displayTitle: evt.target.displayTitle.value, 
+			//searchTitle: evt.target.searchTitle.value,
+			// display_title:
+			// search_title: .toLowerCase()	
+
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value
@@ -259,6 +267,7 @@ var HomeView = React.createClass({
 	// _handleLibrary: function(){
 	// 	window.location.hash = 'library'
 	// },
+
 
 	_handlePicture: function(evt){
 		var component = this
@@ -470,23 +479,48 @@ var NavBar = React.createClass({
 })
 
 var SearchLibary = React.createClass({
+	getInitialState: function(){
+		return{
+			currentSearchVal: ""
 
-	// _handleSearchSubmit: function(keyEvent){
-	// 	if(keyEvent.keyCode === 13){
-	// 		var searchedRecipe = keyEvent.target.value
-	// 		keyEvent.target.value = ''	
-	// 	},
-
-	// 	recipeSearch = new UserRecipeCollection(searchedRecipe)
-	// 	recipeSearch.on('sync'. function(){
-	// 		console.log('recipeSearch', recipeSearch)
-	// 	})
-	// },
+		}
+	},
 
 	_handleSearchSubmit: function(keyEvent){
+
+		var component = this 
+
+		var ref = new Firebase(`https://feedgenerations.firebaseio.com/users/${fbRef.getAuth().uid}/recipes`);
+		var typed = function(){
+			keyEvent.target.value.toLowerCase()
+		}
+
+		if (typed.length > 0) {
+			console.log(typed)
+			console.log(`${typed}\uf8ff`)
+			ref.orderByChild('title').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
+			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^
+				function(snapshot) {
+					console.log('got snapshot')
+					//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
+					snapshot.forEach(function(obj) {
+						var recipeTitle = obj.val().title //the result of what is type in the query
+						console.log('data item>>>',recipeTitle)
+						
+						component.setState({
+							currentSearchVal: recipeTitle
+						})
+
+					})
+			})
+		}
+
 		if(keyEvent.which === 13){
+			keyEvent.preventDefault()
 			console.log(keyEvent.target.value)
-			location.hash = 'search/'+keyEvent.target.value
+			if(typed.length > 0 ) {
+				window.location.hash = 'library/' + 'search/' + typed
+			}	
 		}
 	},
 
@@ -494,7 +528,8 @@ var SearchLibary = React.createClass({
 		return(
 			<div className="searchContainer">
 				<form>
-					<input onKeyPress={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
+					<input onKeyDown={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
+					<p>{this.state.currentSearchVal}</p>
 				</form>
 			</div>
 		)
@@ -520,13 +555,13 @@ var SearchLibary = React.createClass({
 
 var AppRouter = BackboneFire.Router.extend({
 	routes: {
-		"signup"	         : "showSignUpView",
-		"login"		         : "showLoginView",
-		"library/:recipeId": "showSingleRecipe",
-		"library"          : "showRecipeLibrary",
-		"search/:query"    : "showRecipeLibrary",
-		"home"             : "showHome",
-		"*def"             : "showHome"	
+		"signup"	         				: "showSignUpView",
+		"login"		         				: "showLoginView",
+		"library/search/:query"   : "showRecipeLibrary",
+		"library/:recipeId"				: "showSingleRecipe",
+		"library"          				: "showRecipeLibrary",
+		"home"             				: "showHome",
+		"*def"             				: "showHome"	
 
 		// "library" : "libraryView",
 		// "family"	:	"familyView",
@@ -565,6 +600,7 @@ var AppRouter = BackboneFire.Router.extend({
 		if(query){
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid , query )
 			// userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+			console.log('queried recipes>>>>', userRecipeCollection)
 		}
 		else{
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
