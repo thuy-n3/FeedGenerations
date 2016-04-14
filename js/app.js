@@ -34,18 +34,24 @@ var UserCollection = BackboneFire.Firebase.Collection.extend({
   	this.url = fbRef.child('users')
   }
 })
-
 var UserRecipeCollection = BackboneFire.Firebase.Collection.extend({
 	url: '',
-	initialize: function(uid){
-		this.url = fbRef.child('users').child(uid).child('recipes')
+	initialize: function(uid , query){
+		if (query !=undefined)	{	
+			this.url = fbRef.child('users').child(uid).child('recipes').orderByChild('title').equalTo(query)
+			console.log('url',this.url)
+		}
+		else{
+			this.url = fbRef.child('users').child(uid).child('recipes')
+		}
 	}
 })
 
 var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	url: '', 
-	initialize: function(uid,recipeId){
+	initialize: function(uid,recipeId, ){
 		this.url = fbRef.child('users').child(uid).child('recipes').child(recipeId)
+		
 	}
 })
 
@@ -56,7 +62,9 @@ var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
 		return {
-			userRecipes: []
+			// userRecipes: [],
+			ready:false
+
 		}
 	}, 
 
@@ -70,18 +78,26 @@ var RecipeLibraryView = React.createClass({
 
 		return(
 			<h5>
-				<a onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("title")} </a>
+				<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
+				<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("title")} </p>
 			</h5>
 		)
 	},
+
+// _handleSearchSubmit: function(){
+// 	evt.preventDefault()
+
+// },
 
 	componentDidMount: function(){
 		var component = this 
 
 		this.props.recipeColl.on("sync", function(){
+// alert()
 			console.log(component.props.recipeColl)
 			component.setState({
-				userRecipes: component.props.recipeColl.models
+				ready:true
+				// userRecipes: component.props.recipeColl.models
 			})
 		})
 	}, 
@@ -89,13 +105,22 @@ var RecipeLibraryView = React.createClass({
 	render: function(){
 
 		var component = this
-
 		return(
 			<div>
 				<Header />
+				<NavBar />
+				<SearchLibary />
 				<h1>Recipe Library</h1>
 
-				{this.state.userRecipes.map(component._showRecipesJSX)}
+			{/*	<form onSubmit={this._handleSearchSubmit}>
+								<input type='text' id="searchlibrary" placeholder='search library' />
+								<input className='button-primary' type='submit' value='submit' />
+			
+			
+							</form>*/}
+
+
+				{this.props.recipeColl.models.map(component._showRecipesJSX)}
 
 			</div>
 		)
@@ -108,6 +133,7 @@ var SingleReceipeView = React.createClass({
 	getInitialState: function(){
 		return{
 			userRecipes: {
+					picture: "",
 					title: "", 
 					ingredients: "", 
 					instructions: "", 
@@ -119,12 +145,12 @@ var SingleReceipeView = React.createClass({
 		if(!mdl.id) return 'no id found'
 
 			return(
+				
 				<h5>
-					{mdl.get("title","ingredients","instructions","equipment")}
+					{mdl.get("picture","title","ingredients","instructions","equipment")}
 				</h5>
 			)
 	},
-
 	componentDidMount: function(){
 		var component = this
 				// model = this.props.recipeMdl;
@@ -147,6 +173,7 @@ var SingleReceipeView = React.createClass({
 
 		component.setState({ 
 				userRecipes:{
+					picture: component.props.recipeMdl.get("picture"),
 					title: component.props.recipeMdl.get("title"), 
 					ingredients: component.props.recipeMdl.get("ingredients"), 
 					instructions: component.props.recipeMdl.get("instructions"), 
@@ -165,7 +192,9 @@ var SingleReceipeView = React.createClass({
 		return(
 			<div>
 				<Header />
+				<NavBar />
 
+				<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				<h4>{this.state.userRecipes.title}</h4>
 				<h6>Ingredients</h6>
 				{this.state.userRecipes.ingredients}
@@ -185,9 +214,20 @@ var SingleReceipeView = React.createClass({
 
 var HomeView = React.createClass({
 
+	getInitialState: function(){
+		return({
+			imageFileData: ""
+			}	
+		)
+	},
+
+	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
 
+		//console.log(this.state.imageFileData)
+
+		console.log(this.state.imageFileData)	//is there another way to console.log to tell that img has upload?
 		console.log(evt.target.title.value)
 		console.log(evt.target.ingredientsText.value)
 		console.log(evt.target.instructionText.value)
@@ -196,6 +236,9 @@ var HomeView = React.createClass({
 		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 
 		userRecipeCollection.create({
+			// picture: evt.target.featureImage.imageFileData,
+
+			picture: this.state.imageFileData,
 			title: evt.target.title.value,
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
@@ -207,24 +250,52 @@ var HomeView = React.createClass({
 
 	},
 
-	_handleLogOut: function(){
-		fbRef.unauth();
-		// MyAppRtr.navigate('login', {trigger: true})
-		window.location.hash = 'login'
+	// _handleLogOut: function(){
+	// 	fbRef.unauth();
+	// 	// MyAppRtr.navigate('login', {trigger: true})
+	// 	window.location.hash = 'login'
+	// },
+
+	// _handleLibrary: function(){
+	// 	window.location.hash = 'library'
+	// },
+
+	_handlePicture: function(evt){
+		var component = this
+
+		console.log(evt.target.files[0])
+		var fileReader = new FileReader()
+
+		fileReader.readAsDataURL(evt.target.files[0]);
+
+		fileReader.addEventListener("load", function() {
+    		component.setState({
+    			imageFileData: fileReader.result
+    		})
+    		// console.log(fileReader.result);
+
+  	
+  		}, 
+  		// false
+  		);
+
 	},
 
-	_handleLibrary: function(){
-		window.location.hash = 'library'
-	},
 
 	render:function(){
 		return(
 			<div>
 				<Header />
+				<NavBar />
 				<h1>Welcome Home! </h1>
 				{/*{fbRef.getAuth().uid}*/}
 
+
 				<form onSubmit={this._handleFormSubmit}>
+
+					<input type="file" id="featureImage" onChange={this._handlePicture}/><br/>
+					<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
+
 
 					<input type="text" id="title" placeholder="recipe title"/><br/>
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
@@ -235,15 +306,14 @@ var HomeView = React.createClass({
 
 				</form>
 
-				<button onClick={this._handleLibrary}>Library</button>
-
-				<button onClick={this._handleFamily}>Family</button><br/>
-
 			</div>
+
+			
 		)
 	},
 
 })
+
 
 var SignUpView = React.createClass({
 
@@ -353,22 +423,100 @@ var LoginView = React.createClass({
 
 var Header = React.createClass({
 
-		_handleLogOut: function(){
-		fbRef.unauth();
-		// MyAppRtr.navigate('login', {trigger: true})
-		window.location.hash = 'login'
-	},
+	// 	_handleLogOut: function(){
+	// 	fbRef.unauth();
+	// 	// MyAppRtr.navigate('login', {trigger: true})
+	// 	window.location.hash = 'login'
+	// },
 
 	render: function(){
 		return(
 			<div className="headerContainer">
 				<h1 className="title">Feed Generations</h1>
-				<button onClick={this._handleLogOut}>Log Out</button>
+		 		{/*<button onClick={this._handleLogOut}>Log Out</button>*/}
 			</div>
 		)
 	}
 
 })
+
+var NavBar = React.createClass({
+
+	_handleLibrary: function(){
+		window.location.hash = 'library'
+	},
+
+	_handleLogOut: function(){
+	fbRef.unauth();
+	// MyAppRtr.navigate('login', {trigger: true})
+	window.location.hash = 'login'
+	},
+
+	_handleHome: function(){
+		window.location.hash = 'home'
+	},
+	
+
+	render: function(){
+		return(
+			<div className="navContainer">
+				<button className="home" onClick={this._handleHome}>Home</button>
+				<button className="library" onClick={this._handleLibrary}>Library</button>
+				<button className="family" >Family</button>
+				<button className="logOut" onClick={this._handleLogOut}>Log Out</button>
+			</div>
+		)
+	}
+})
+
+var SearchLibary = React.createClass({
+
+	// _handleSearchSubmit: function(keyEvent){
+	// 	if(keyEvent.keyCode === 13){
+	// 		var searchedRecipe = keyEvent.target.value
+	// 		keyEvent.target.value = ''	
+	// 	},
+
+	// 	recipeSearch = new UserRecipeCollection(searchedRecipe)
+	// 	recipeSearch.on('sync'. function(){
+	// 		console.log('recipeSearch', recipeSearch)
+	// 	})
+	// },
+
+	_handleSearchSubmit: function(keyEvent){
+		if(keyEvent.which === 13){
+			console.log(keyEvent.target.value)
+			location.hash = 'search/'+keyEvent.target.value
+		}
+	},
+
+	render: function(){
+		return(
+			<div className="searchContainer">
+				<form>
+					<input onKeyPress={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
+				</form>
+			</div>
+		)
+	}
+
+})
+
+
+// var Pictures = React.createClass({
+
+// 	imageFile:null
+
+// 	_handleUpload: function(e){
+// 		var inputEl = e.target 
+// 		this.imageFile = inputEl.files[0]
+// 	}, 
+
+// 	_submitFile: function(){
+
+// 	}
+
+// })
 
 var AppRouter = BackboneFire.Router.extend({
 	routes: {
@@ -376,6 +524,8 @@ var AppRouter = BackboneFire.Router.extend({
 		"login"		         : "showLoginView",
 		"library/:recipeId": "showSingleRecipe",
 		"library"          : "showRecipeLibrary",
+		"search/:query"    : "showRecipeLibrary",
+		"home"             : "showHome",
 		"*def"             : "showHome"	
 
 		// "library" : "libraryView",
@@ -407,11 +557,18 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 	
-	showRecipeLibrary: function(){
+	showRecipeLibrary: function(query){
 
 		console.log("from RecipeLibraryView")
 
-		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid )
+		var userRecipeCollection
+		if(query){
+			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid , query )
+			// userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+		}
+		else{
+			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+		}
 
 		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.container') )
 	},
@@ -450,8 +607,6 @@ var AppRouter = BackboneFire.Router.extend({
 	}
 
 })
-
-
 
 
 
