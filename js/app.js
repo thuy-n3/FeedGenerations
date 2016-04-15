@@ -39,7 +39,7 @@ var UserRecipeCollection = BackboneFire.Firebase.Collection.extend({
 	url: '',
 	initialize: function(uid , query){
 		if (query !=undefined)	{	
-			this.url = fbRef.child('users').child(uid).child('recipes').orderByChild('title').equalTo(query)
+			this.url = fbRef.child('users').child(uid).child('recipes').orderByChild('searchTitle').equalTo(query)
 			console.log('url',this.url)
 
 		}
@@ -80,16 +80,15 @@ var RecipeLibraryView = React.createClass({
 
 		return(
 			<h5>
-				<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
-				<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("title")} </p>
+				<div className="libraryImgContainer">
+					<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
+				</div>
+				<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
 			</h5>
 		)
 	},
 
-// _handleSearchSubmit: function(){
-// 	evt.preventDefault()
 
-// },
 
 	componentDidMount: function(){
 		var component = this 
@@ -136,7 +135,7 @@ var SingleReceipeView = React.createClass({
 		return{
 			userRecipes: {
 					picture: "",
-					title: "", 
+					displayTitle: "", 
 					ingredients: "", 
 					instructions: "", 
 					equipment: ""}
@@ -149,7 +148,7 @@ var SingleReceipeView = React.createClass({
 			return(
 				
 				<h5>
-					{mdl.get("picture","title","ingredients","instructions","equipment")}
+					{mdl.get("picture","displayTitle","ingredients","instructions","equipment")}
 				</h5>
 			)
 	},
@@ -176,7 +175,7 @@ var SingleReceipeView = React.createClass({
 		component.setState({ 
 				userRecipes:{
 					picture: component.props.recipeMdl.get("picture"),
-					title: component.props.recipeMdl.get("title"), 
+					displayTitle: component.props.recipeMdl.get("displayTitle"), 
 					ingredients: component.props.recipeMdl.get("ingredients"), 
 					instructions: component.props.recipeMdl.get("instructions"), 
 					equipment: component.props.recipeMdl.get("equipment")
@@ -196,8 +195,11 @@ var SingleReceipeView = React.createClass({
 				<Header />
 				<NavBar />
 
-				<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
-				<h4>{this.state.userRecipes.title}</h4>
+				<div className="singleImgContainer">
+					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
+				</div>
+
+				<h4>{this.state.userRecipes.displayTitle}</h4>
 				<h6>Ingredients</h6>
 				{this.state.userRecipes.ingredients}
 				<h6>Equipment</h6>
@@ -226,23 +228,28 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
+		
 
 		//console.log(this.state.imageFileData)
 
 		console.log(this.state.imageFileData)	//is there another way to console.log to tell that img has upload?
-		console.log(evt.target.title.value)
+		console.log(evt.target.displayTitle.value)
+		//console.log(evt.target.searchTitle.value.toLowerCase())
 		console.log(evt.target.ingredientsText.value)
 		console.log(evt.target.instructionText.value)
 		console.log(evt.target.equipmentText.value)
 
+
+
 		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 
 		userRecipeCollection.create({
-			// picture: evt.target.featureImage.imageFileData,
+
+			// picture: evt.target.imageInput.imageFileData,
 			picture: this.state.imageFileData,
 
 			displayTitle: evt.target.displayTitle.value, 
-			searchTitle: evt.target.searchTitle.value,		
+			searchTitle: evt.target.displayTitle.value.toLowerCase(),	
 			//title: evt.target.title.value,
 			// display_title:
 			// search_title: .toLowerCase()
@@ -250,10 +257,12 @@ var HomeView = React.createClass({
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value
 
+
+
 		})
 
 		console.log(userRecipeCollection)
-
+		
 	},
 
 	// _handleLogOut: function(){
@@ -280,8 +289,6 @@ var HomeView = React.createClass({
     			imageFileData: fileReader.result
     		})
     		// console.log(fileReader.result);
-
-  	
   		}, 
   		// false
   		);
@@ -300,11 +307,14 @@ var HomeView = React.createClass({
 
 				<form onSubmit={this._handleFormSubmit}>
 
-					<input type="file" id="featureImage" onChange={this._handlePicture}/><br/>
+					<input type="file" id="imageInput" onChange={this._handlePicture}/><br/>
+
+
+				<div className="previewImgContainer">
 					<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
+				</div>
 
-
-					<input type="text" id="title" placeholder="recipe title"/><br/>
+					<input type="text" id="displayTitle" placeholder="recipe title"/><br/>
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
 					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
 					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
@@ -315,6 +325,7 @@ var HomeView = React.createClass({
 
 			</div>
 
+			
 			
 		)
 	},
@@ -331,6 +342,7 @@ var SignUpView = React.createClass({
 		var emailInput = evt.currentTarget.email.value
 		var pwInput = evt.currentTarget.password.value 
 		var nameInput = evt.currentTarget.name.value
+
 
 		var newUser = {
 			email: emailInput,
@@ -439,7 +451,7 @@ var Header = React.createClass({
 	render: function(){
 		return(
 			<div className="headerContainer">
-				<h1 className="title">Feed Generations</h1>
+				<h1 className="headerTitle">Feed Generations</h1>
 		 		{/*<button onClick={this._handleLogOut}>Log Out</button>*/}
 			</div>
 		)
@@ -496,13 +508,13 @@ var SearchLibary = React.createClass({
 		if (typed.length > 0) {
 			console.log(typed)
 			console.log(`${typed}\uf8ff`)
-			ref.orderByChild('title').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
+			ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
 			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^
 				function(snapshot) {
 					console.log('got snapshot')
 					//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
 					snapshot.forEach(function(obj) {
-						var recipeTitle = obj.val().title //the result of what is type in the query
+						var recipeTitle = obj.val().searchTitle //the result of what is type in the query
 						console.log('data item>>>',recipeTitle)
 						
 						component.setState({
@@ -520,6 +532,7 @@ var SearchLibary = React.createClass({
 				window.location.hash = 'library/' + 'search/' + typed
 			}	
 		}
+		
 	},
 
 	render: function(){
@@ -587,6 +600,8 @@ var AppRouter = BackboneFire.Router.extend({
 		console.log("from HomeView")
 
 		DOM.render( <HomeView/>, document.querySelector('.container') )
+
+
 
 	},
 	
