@@ -595,10 +595,10 @@ var SearchLibary = React.createClass({
 
 var AppRouter = BackboneFire.Router.extend({
 	routes: {
-		"signup"	         				: "showSignUpView",
-		"login"		         				: "showLoginView",
-		"welcome"									:	"showWelcome",
-		"library/search/:query"   : "showRecipeLibrary",
+		"signup"	         			: "showSignUpView",
+		"login"		         			: "showLoginView",
+		"welcome"						:	"showWelcome",
+		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
 		"home"             				: "showHome",
