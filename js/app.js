@@ -436,37 +436,41 @@ var LoginView = React.createClass({
 })
 
 
-var WelcomeView = React.createClass({
+// var WelcomeView = React.createClass({
 
-	// <SignUpView />
-	// <LoginView />
-
-	_goToSignView: function(){
-		window.location.hash = "signup"
-	}, 
-
-	_goToLoginView: function(){
-		window.location.hash = "login"
-	},
+// 	// <SignUpView />
+// 	// <LoginView />
 
 
-	render: function(){
-		return(
-			<div className="welcomeContainer">
-				<div className="signUpContainer">
-					<h5>Join the Family!</h5>
-					<button onClick={this._goToSignView} className="SignupButton">Sign Up</button>
-				</div><br/>
+// 	_goToSignView: function(){
+// 		window.location.hash = "signup"
+// 	}, 
+
+// 	_goToLoginView: function(){
+// 		window.location.hash = "login"
+// 	},
+
+
+// 	render: function(){
+// 		return(
+// 			<div className="welcomeContainer">
+
+// 			<Header />
+
+// 				<div className="signUpContainer">
+// 					<h5>Join the Family!</h5>
+// 					<button onClick={this._goToSignView} className="SignupButton">Sign Up</button>
+// 				</div><br/>
 				
-				<div className="loginContainer">
-					<h5>Already a Member?</h5>
-					<button onClick={this._goToLoginView} className="LoginButton">Log In</button>
-				</div>
-			</div>
-		)
-	}
+// 				<div className="loginContainer">
+// 					<h5>Already a Member?</h5>
+// 					<button onClick={this._goToLoginView} className="LoginButton">Log In</button>
+// 				</div>
+// 			</div>
+// 		)
+// 	}
 
-})
+// })
 
 
 var Header = React.createClass({
@@ -597,12 +601,12 @@ var AppRouter = BackboneFire.Router.extend({
 	routes: {
 		"signup"	         			: "showSignUpView",
 		"login"		         			: "showLoginView",
-		"welcome"						:	"showWelcome",
+		// "welcome"						: "showWelcome",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
 		"home"             				: "showHome",
-		"*def"             				: "showWelcome"	
+		"*def"             				: "showHome"	
 
 		// "library" : "libraryView",
 		// "family"	:	"familyView",
@@ -633,13 +637,13 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 
-	showWelcome: function(){
+	// showWelcome: function(){
 
-		console.log("from WelcomeView")
+	// 	console.log("from WelcomeView")
 
-		DOM.render( <WelcomeView/>, document.querySelector('.container') )
+	// 	DOM.render( <WelcomeView/>, document.querySelector('.container') )
 
-	},
+	// },
 	
 	showRecipeLibrary: function(query){
 
@@ -675,28 +679,28 @@ var AppRouter = BackboneFire.Router.extend({
 
 	initialize: function(){
 
-		// console.log(window.location.hash)
-		// if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-		// 	location.hash = "login"
-		// }
-
-		// this.on('route', function(){
-		// 	if(!fbRef.getAuth() && window.location.hash!== "#signup"){
-		// 		location.hash = "login"
-		// 	}
-		// })
-
-	console.log(window.location.hash)
-
-	if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-		location.hash = "welcome"
-	}
-
-	this.on('route', function(){
-		if(fbRef.getAuth() && window.location.hash!== '#signup'){
-			location.hash = "welcome"
+		console.log(window.location.hash)
+		if(!fbRef.getAuth() && window.location.hash!== '#signup'){
+			location.hash = "login"
 		}
-	})
+
+		this.on('route', function(){
+			if(!fbRef.getAuth() && window.location.hash!== "#signup"){
+				location.hash = "login"
+			}
+		})
+
+	// console.log(window.location.hash)
+
+	// if(!fbRef.getAuth() && window.location.hash!== '#signup'){
+	// 	location.hash = "welcome"
+	// }
+
+	// this.on('route', function(){
+	// 	if(fbRef.getAuth() && window.location.hash!== '#signup'){
+	// 		location.hash = "welcome"
+	// 	}
+	// })
 
 
 	BackboneFire.history.start()
