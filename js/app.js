@@ -225,7 +225,7 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
-		
+		evt.taget.value = ""
 
 		//console.log(this.state.imageFileData)
 
@@ -235,7 +235,6 @@ var HomeView = React.createClass({
 		console.log(evt.target.ingredientsText.value)
 		console.log(evt.target.instructionText.value)
 		console.log(evt.target.equipmentText.value)
-
 
 
 		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
@@ -253,8 +252,6 @@ var HomeView = React.createClass({
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value
-
-
 
 		})
 
@@ -333,6 +330,7 @@ var SignUpView = React.createClass({
 	_signUp: function(evt){ 	//pasing the evt(clicking of the button)
 
 		evt.preventDefault()	//????
+		evt.target.value = ""
 
 		var emailInput = evt.currentTarget.email.value
 		var pwInput = evt.currentTarget.password.value 
@@ -348,7 +346,6 @@ var SignUpView = React.createClass({
 		fbRef.createUser( newUser, function(err, authData){
 
 			var userColl = new UserCollection()
-
 			userColl.create({
 				name: nameInput,
 				email: emailInput,
@@ -360,7 +357,7 @@ var SignUpView = React.createClass({
 				password: pwInput
 			}
 
-			// authenticate the user  (hint: look at _handleLogin in LoginView) 
+			// authenticate the user  (hint: look at _handleLogin in SignUpView) 
 			fbRef.authWithPassword(authDataObj, function(err, authData){
 				if(err){
 					alert("Error in Creating Account. Try Again.")
@@ -369,7 +366,7 @@ var SignUpView = React.createClass({
 					console.log("---signup user authenticated-------------")
 					console.log(authData)
 
-					window.location.hash = '' 
+					location.hash = '' 
 				}
 			})
 		})
@@ -397,6 +394,7 @@ var LoginView = React.createClass({
 
 	_handleLogin: function(evt){
 		evt.preventDefault()
+		evt.target.value = ""
 
 		var emailInput = evt.currentTarget.email.value 
 		var pwInput = evt.currentTarget.password.value
@@ -412,7 +410,8 @@ var LoginView = React.createClass({
 			}
 			else{
 				console.log("---login user authenticated---------")
-				console.log(authData)
+				console.log("---data from log in-------", authData)
+
 				window.location.hash = ''
 			}
 		})
@@ -435,37 +434,35 @@ var LoginView = React.createClass({
 
 })
 
-
 var WelcomeView = React.createClass({
 
-	// <SignUpView />
-	// <LoginView />
 
-	_goToSignView: function(){
-		window.location.hash = "signup"
-	}, 
-
-	_goToLoginView: function(){
-		window.location.hash = "login"
+	_goToSignUp: function(){
+		location.hash = 'signup'
 	},
 
+	_goToLogin: function(){
+		location.hash = 'login'
+	},
 
 	render: function(){
+
 		return(
-			<div className="welcomeContainer">
-				<div className="signUpContainer">
+			<div>
+				<Header/>
+
+				<div>
 					<h5>Join the Family!</h5>
-					<button onClick={this._goToSignView} className="SignupButton">Sign Up</button>
+					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
 				</div><br/>
-				
-				<div className="loginContainer">
+
+				<div>
 					<h5>Already a Member?</h5>
-					<button onClick={this._goToLoginView} className="LoginButton">Log In</button>
+					<button onClick={this._goToLogin} className="logInButton">Log In</button>
 				</div>
 			</div>
 		)
 	}
-
 })
 
 
@@ -556,6 +553,7 @@ var SearchLibary = React.createClass({
 
 		if(keyEvent.which === 13){
 			keyEvent.preventDefault()
+
 			console.log(keyEvent.target.value)
 			if(typed.length > 0 ) {
 				window.location.hash = 'library/' + 'search/' + typed
@@ -595,14 +593,14 @@ var SearchLibary = React.createClass({
 
 var AppRouter = BackboneFire.Router.extend({
 	routes: {
-		"signup"	         				: "showSignUpView",
-		"login"		         				: "showLoginView",
-		"welcome"									:	"showWelcome",
-		"library/search/:query"   : "showRecipeLibrary",
+		"signup"	         			: "showSignUpView",
+		"login"		         			: "showLoginView",
+		"welcome"						: "showWelcome",
+		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
 		"home"             				: "showHome",
-		"*def"             				: "showWelcome"	
+		"*def"             				: "showHome"	
 
 		// "library" : "libraryView",
 		// "family"	:	"familyView",
@@ -625,21 +623,22 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 
+	showWelcome: function(){
+
+		console.log("from WelcomeVIew")
+
+		DOM.render( <WelcomeView />, document.querySelector('.container') )
+
+	},
+
 	showHome: function(){
 
 		console.log("from HomeView")
 
-		DOM.render( <HomeView/>, document.querySelector('.container') )
+		DOM.render( <HomeView />, document.querySelector('.container') )
 
 	},
 
-	showWelcome: function(){
-
-		console.log("from WelcomeView")
-
-		DOM.render( <WelcomeView/>, document.querySelector('.container') )
-
-	},
 	
 	showRecipeLibrary: function(query){
 
@@ -675,28 +674,36 @@ var AppRouter = BackboneFire.Router.extend({
 
 	initialize: function(){
 
-		// console.log(window.location.hash)
-		// if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-		// 	location.hash = "login"
-		// }
-
-		// this.on('route', function(){
-		// 	if(!fbRef.getAuth() && window.location.hash!== "#signup"){
-		// 		location.hash = "login"
-		// 	}
-		// })
-
-	console.log(window.location.hash)
-
-	if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-		location.hash = "welcome"
-	}
-
-	this.on('route', function(){
-		if(fbRef.getAuth() && window.location.hash!== '#signup'){
+		console.log(window.location.hash)
+		if( !fbRef.getAuth() && 
+			window.location.hash!== '#signup' &&
+			window.location.hash!== '#login'
+		){	
 			location.hash = "welcome"
+		//^^^^^^^if user is not authorize or window.location.hash is not equal to signup hash than route user to welcome page 
 		}
-	})
+
+		this.on('route', function(){
+			if(!fbRef.getAuth() && 
+				window.location.hash!== "#signup" &&
+				window.location.hash!== '#login'
+			){
+				location.hash = "welcome"
+		//^^^^^^^if the user route is on an unauthorize hash or #signup than route user to welcome		
+			}
+		})
+
+	console.log("----from initialize----------", window.location.hash)
+
+	// if(!fbRef.getAuth() && window.location.hash!== '#signup'){
+	// 	location.hash = "login"
+	// }
+
+	// this.on('route', function(){
+	// 	if(fbRef.getAuth() && window.location.hash!== '#signup'){
+	// 	ocation.hash = "login"
+	// 	}
+	// })
 
 
 	BackboneFire.history.start()
