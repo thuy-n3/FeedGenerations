@@ -598,7 +598,7 @@ var AppRouter = BackboneFire.Router.extend({
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
-		
+
 		"home"             				: "showHome",
 		"*def"             				: "showWelcome"	
 
@@ -674,16 +674,16 @@ var AppRouter = BackboneFire.Router.extend({
 
 	initialize: function(){
 
-		console.log(window.location.hash)
-		if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-			location.hash = "welcome"
-		}
+		// console.log(window.location.hash)
+		// if(!fbRef.getAuth() && window.location.hash!== '#signup'){
+		// 	location.hash = "welcome"
+		// }
 
-		this.on('route', function(){
-			if(!fbRef.getAuth() && window.location.hash!== "#signup"){
-				location.hash = "welcome"
-			}
-		})
+		// this.on('route', function(){
+		// 	if(!fbRef.getAuth() && window.location.hash!== "#signup"){
+		// 		location.hash = "welcome"
+		// 	}
+		// })
 
 	// console.log(window.location.hash)
 
