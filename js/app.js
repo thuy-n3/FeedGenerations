@@ -35,6 +35,13 @@ var UserCollection = BackboneFire.Firebase.Collection.extend({
   }
 })
 
+var FamilyCollection = BackboneFire.Firebase.Collection.extend({
+	url: '', 
+	initialize: function(){
+		this.url = fbRef.child('families')
+	}
+})
+
 var UserRecipeCollection = BackboneFire.Firebase.Collection.extend({
 	url: '',
 	initialize: function(uid , query){
@@ -366,7 +373,9 @@ var SignUpView = React.createClass({
 					console.log("---signup user authenticated-------------")
 					console.log(authData)
 
-					location.hash = '' 
+					//location.hash = '' 
+					location.hash = 'setfamily'		//<<<<<------------------routing to setfamily after user acct created!!!! 
+					//after user has create a account, they need to be routed to the create family page 
 				}
 			})
 		})
@@ -384,6 +393,48 @@ var SignUpView = React.createClass({
 					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
 				</form>	
+			</div>
+		)
+	}
+
+})
+
+var SetFamilyView = React.createClass({
+
+	_handleSetFamily: function(evt){
+
+		evt.preventDefault()
+		
+
+		console.log (familyNameInput), 
+		console.log (familyDescriptionInput), 
+		console.log(familyCreatorEmailInput)
+
+		var familyNameInput = evt.currentTarget.familyNameInput.value
+		var familyDescriptionInput = evt.currentTarget.familyDescriptionInput.value
+		var familyCreatorEmailInput = evt.currentTarget.familyCreatorNameInput.value
+
+		var newFamilyData = {
+			familyName: familyNameInput, 
+			familyDescription: familyDescriptionInput, 
+			familyCreatorEmail: familyCreatorEmailInput
+		}
+
+		
+		
+		
+	},
+
+	render: function(){
+		return(
+			<div className="setFamilyContainer">
+				<form onSubmit={this._handleSetFamily} >
+					<p>Create a Familly</p>
+					<input type="text" id="familyNameInput" placeholder="Enter Family Name" />
+					<input type="text" id="familyDescriptionInput" placeholder="Enter Family Description" />
+					<input type="text" id="familyCreatorNameInput" placeholder="Enter Creator's Name" />
+					<input type="submit" id="familySummitButton" defaultValue="submit" />
+				</form>
 			</div>
 		)
 	}
@@ -494,7 +545,7 @@ var NavBar = React.createClass({
 	_handleLogOut: function(){
 	fbRef.unauth();
 	// MyAppRtr.navigate('login', {trigger: true})
-	window.location.hash = 'login'
+	window.location.hash = 'welcome'
 	},
 
 	_handleHome: function(){
@@ -596,6 +647,7 @@ var AppRouter = BackboneFire.Router.extend({
 		"signup"	         			: "showSignUpView",
 		"login"		         			: "showLoginView",
 		"welcome"						: "showWelcome",
+		"setfamily"						: "showSetFamily",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
@@ -622,6 +674,14 @@ var AppRouter = BackboneFire.Router.extend({
 		DOM.render( <LoginView />, document.querySelector('.container') )
 
 	},
+
+	showSetFamily: function(){
+
+		console.log("from SetFamily")
+
+		DOM.render( <SetFamilyView />, document.querySelector('.container') )
+
+	}, 
 
 	showWelcome: function(){
 
