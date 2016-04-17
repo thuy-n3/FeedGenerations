@@ -435,42 +435,35 @@ var LoginView = React.createClass({
 
 })
 
-
-// var WelcomeView = React.createClass({
-
-// 	// <SignUpView />
-// 	// <LoginView />
+var WelcomeView = React.createClass({
 
 
-// 	_goToSignView: function(){
-// 		window.location.hash = "signup"
-// 	}, 
+	_goToSignUp: function(){
+		location.hash = 'signup'
+	},
 
-// 	_goToLoginView: function(){
-// 		window.location.hash = "login"
-// 	},
+	_goToLogin: function(){
+		location.hash = 'login'
+	},
 
+	render: function(){
+		return(
+			<div>
+				<Header/>
 
-// 	render: function(){
-// 		return(
-// 			<div className="welcomeContainer">
+				<div>
+					<h5>Join the Family!</h5>
+					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
+				</div><br/>
 
-// 			<Header />
-
-// 				<div className="signUpContainer">
-// 					<h5>Join the Family!</h5>
-// 					<button onClick={this._goToSignView} className="SignupButton">Sign Up</button>
-// 				</div><br/>
-				
-// 				<div className="loginContainer">
-// 					<h5>Already a Member?</h5>
-// 					<button onClick={this._goToLoginView} className="LoginButton">Log In</button>
-// 				</div>
-// 			</div>
-// 		)
-// 	}
-
-// })
+				<div>
+					<h5>Already a Member?</h5>
+					<button onClick={this._goToLogin} className="logInButton">Log In</button>
+				</div>
+			</div>
+		)
+	}
+})
 
 
 var Header = React.createClass({
@@ -601,12 +594,13 @@ var AppRouter = BackboneFire.Router.extend({
 	routes: {
 		"signup"	         			: "showSignUpView",
 		"login"		         			: "showLoginView",
-		// "welcome"						: "showWelcome",
+		"welcome"						: "showWelcome",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
+		
 		"home"             				: "showHome",
-		"*def"             				: "showHome"	
+		"*def"             				: "showWelcome"	
 
 		// "library" : "libraryView",
 		// "family"	:	"familyView",
@@ -629,21 +623,22 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 
+	showWelcome: function(){
+
+		console.log("from WelcomeVIew")
+
+		DOM.render( <WelcomeView />, document.querySelector('.container') )
+
+	},
+
 	showHome: function(){
 
 		console.log("from HomeView")
 
-		DOM.render( <HomeView/>, document.querySelector('.container') )
+		DOM.render( <HomeView />, document.querySelector('.container') )
 
 	},
 
-	// showWelcome: function(){
-
-	// 	console.log("from WelcomeView")
-
-	// 	DOM.render( <WelcomeView/>, document.querySelector('.container') )
-
-	// },
 	
 	showRecipeLibrary: function(query){
 
@@ -681,12 +676,12 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log(window.location.hash)
 		if(!fbRef.getAuth() && window.location.hash!== '#signup'){
-			location.hash = "login"
+			location.hash = "welcome"
 		}
 
 		this.on('route', function(){
 			if(!fbRef.getAuth() && window.location.hash!== "#signup"){
-				location.hash = "login"
+				location.hash = "welcome"
 			}
 		})
 
@@ -698,7 +693,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 	// this.on('route', function(){
 	// 	if(fbRef.getAuth() && window.location.hash!== '#signup'){
-	// 		location.hash = "welcome"
+	// 	ocation.hash = "welcome"
 	// 	}
 	// })
 
