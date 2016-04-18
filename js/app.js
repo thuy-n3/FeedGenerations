@@ -35,7 +35,7 @@ var UserCollection = BackboneFire.Firebase.Collection.extend({
   }
 })
 
-var FamilyCollection = BackboneFire.Firebase.Collection.extend({
+var FamiliesCollection = BackboneFire.Firebase.Collection.extend({
 	url: '', 
 	initialize: function(){
 		this.url = fbRef.child('families')
@@ -232,7 +232,7 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
-		evt.taget.value = ""
+		
 
 		//console.log(this.state.imageFileData)
 
@@ -337,7 +337,7 @@ var SignUpView = React.createClass({
 	_signUp: function(evt){ 	//pasing the evt(clicking of the button)
 
 		evt.preventDefault()	//????
-		evt.target.value = ""
+		
 
 		var emailInput = evt.currentTarget.email.value
 		var pwInput = evt.currentTarget.password.value 
@@ -356,7 +356,7 @@ var SignUpView = React.createClass({
 			userColl.create({
 				name: nameInput,
 				email: emailInput,
-				id: authData.uid
+				id: authData.uid  //
 				})
 
 			var authDataObj = {
@@ -402,27 +402,32 @@ var SignUpView = React.createClass({
 var SetFamilyView = React.createClass({
 
 	_handleSetFamily: function(evt){
-
 		evt.preventDefault()
 		
-
-		console.log (familyNameInput), 
-		console.log (familyDescriptionInput), 
-		console.log(familyCreatorEmailInput)
+		console.log(evt.currentTarget.familyNameInput.value), 
+		console.log(evt.currentTarget.familyDescriptionInput.value), 
+		console.log(evt.currentTarget.familyCreatorNameInput.value)
 
 		var familyNameInput = evt.currentTarget.familyNameInput.value
 		var familyDescriptionInput = evt.currentTarget.familyDescriptionInput.value
-		var familyCreatorEmailInput = evt.currentTarget.familyCreatorNameInput.value
+		var familyCreatorNameInput = evt.currentTarget.familyCreatorNameInput.value
 
 		var newFamilyData = {
 			familyName: familyNameInput, 
 			familyDescription: familyDescriptionInput, 
-			familyCreatorEmail: familyCreatorEmailInput
+			familyCreatorName: familyCreatorNameInput
 		}
 
-		
-		
-		
+		console.log("----newFamilyData--------", newFamilyData)
+
+		var familiesColl = new FamiliesCollection(fbRef.getAuth().uid)
+			familiesColl.create({
+				familyName: familyNameInput,
+				familyDescription: familyDescriptionInput, 
+				familyCreatorName: familyCreatorNameInput
+			})
+
+
 	},
 
 	render: function(){
@@ -445,7 +450,7 @@ var LoginView = React.createClass({
 
 	_handleLogin: function(evt){
 		evt.preventDefault()
-		evt.target.value = ""
+		
 
 		var emailInput = evt.currentTarget.email.value 
 		var pwInput = evt.currentTarget.password.value
@@ -678,7 +683,7 @@ var AppRouter = BackboneFire.Router.extend({
 	showSetFamily: function(){
 
 		console.log("from SetFamily")
-
+		// new usermodel --> props --> save fam id to user modl in submit in evthandle 
 		DOM.render( <SetFamilyView />, document.querySelector('.container') )
 
 	}, 
