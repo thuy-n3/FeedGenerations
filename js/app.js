@@ -15,6 +15,11 @@ import _ from 'underscore'
 import Firebase from 'firebase'
 import BackboneFire from 'bbfire'
 
+import JSPDF from 'jspdf'
+
+console.log('===========jspdf==========')
+console.log(JSPDF)
+
 // console.log("=======jquery=====")
 // console.log($)
 // console.log("=======underscore=====")
@@ -595,8 +600,6 @@ var AppRouter = BackboneFire.Router.extend({
 		console.log("from HomeView")
 
 		DOM.render( <HomeView/>, document.querySelector('.container') )
-
-
 
 	},
 	
