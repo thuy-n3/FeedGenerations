@@ -225,7 +225,7 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
-		evt.target.value = ""
+
 
 		//console.log(this.state.imageFileData)
 
@@ -252,6 +252,8 @@ var HomeView = React.createClass({
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value
+
+
 
 		})
 
@@ -314,7 +316,11 @@ var HomeView = React.createClass({
 
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
+					
+
 				</form>
+
+
 
 			</div>	
 			
