@@ -225,7 +225,7 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
-		evt.taget.value = ""
+		evt.target.value = ""
 
 		//console.log(this.state.imageFileData)
 
