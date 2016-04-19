@@ -65,6 +65,9 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 })
 
 
+
+
+
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
@@ -84,12 +87,12 @@ var RecipeLibraryView = React.createClass({
 		if (!mdl.id) return ''
 
 		return(
-			<h5>
+			
 				<div className="libraryImgContainer">
 					<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
+					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
 				</div>
-				<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
-			</h5>
+		
 		)
 	},
 
@@ -114,13 +117,13 @@ var RecipeLibraryView = React.createClass({
 				<Header />
 				<NavBar />
 				<SearchLibary />
-				<h1>Recipe Library</h1>
+				<p>Recipe Library</p>
 
 			{/*	<form onSubmit={this._handleSearchSubmit}>
 								<input type='text' id="searchlibrary" placeholder='search library' />
 								<input className='button-primary' type='submit' value='submit' />
 			
-			
+		
 							</form>*/}
 
 
@@ -151,9 +154,9 @@ var SingleReceipeView = React.createClass({
 
 			return(
 				
-				<h5>
+				<p>
 					{mdl.get("picture","displayTitle","ingredients","instructions","equipment")}
-				</h5>
+				</p>
 			)
 	},
 	componentDidMount: function(){
@@ -203,14 +206,15 @@ var SingleReceipeView = React.createClass({
 					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				</div>
 
-				<h4>{this.state.userRecipes.displayTitle}</h4>
-				<h6>Ingredients</h6>
+				<p>{this.state.userRecipes.displayTitle}</p>
+				<p>Ingredients</p>
 				{this.state.userRecipes.ingredients}
-				<h6>Equipment</h6>
+				<p>Equipment</p>
 				{this.state.userRecipes.equipment}
-				<h6>Instructions</h6>
+				<p>Instructions</p>
 				{this.state.userRecipes.instructions}
-				
+				<p>Summitted by: {this.state.userRecipes.submittedByInput} </p>
+
 
 			</div>
 		)
@@ -242,6 +246,7 @@ var HomeView = React.createClass({
 		console.log(evt.target.ingredientsText.value)
 		console.log(evt.target.instructionText.value)
 		console.log(evt.target.equipmentText.value)
+		console.log(evt.target.submittedByInput.value)
 
 
 		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
@@ -258,7 +263,8 @@ var HomeView = React.createClass({
 			// search_title: .toLowerCase()
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
-			instructions: evt.target.instructionText.value
+			instructions: evt.target.instructionText.value,
+			summittedby: evt.target.submittedByInput.value
 
 		})
 
@@ -302,7 +308,7 @@ var HomeView = React.createClass({
 			<div>
 				<Header />
 				<NavBar />
-				<h1>Welcome Home! </h1>
+				<p>Welcome Home! </p>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -315,10 +321,11 @@ var HomeView = React.createClass({
 					<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
 				</div>
 
-					<input type="text" id="displayTitle" placeholder="recipe title"/><br/>
+					<input type="text" id="displayTitle" placeholder="Enter recipe title"/><br/>
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
 					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
 					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
+					<input type="text" id="submittedByInput" placeholder="Enter your name"/><br/>
 
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
@@ -385,12 +392,12 @@ var SignUpView = React.createClass({
 		return (
 			<div>
 				<form onSubmit={this._signUp}>
-					<h3 className="signUp">Sign Up and Cook with your History</h3>
+					<h1 className="signUp">Sign Up and Cook with your History</h1>
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
 					<input type="text" id="password" placeholder="Password" /><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+					<input className="button-primary" type="submit" defaultValue="Sign Up" /><br/> 
 
 				</form>	
 			</div>
@@ -425,9 +432,9 @@ var SetFamilyView = React.createClass({
 				familyName: familyNameInput,
 				familyDescription: familyDescriptionInput, 
 				familyCreatorName: familyCreatorNameInput
+
+			
 			})
-
-
 	},
 
 	render: function(){
@@ -443,6 +450,7 @@ var SetFamilyView = React.createClass({
 			</div>
 		)
 	}
+
 
 })
 
@@ -477,7 +485,7 @@ var LoginView = React.createClass({
 		return(
 			<div>
 				<form onSubmit={this._handleLogin}>
-					<h3 className="loginIn">Log In</h3>
+					<h1 className="loginIn">Log In</h1>
 
 					<input type="text" id="email" placeholder="email"/><br/>
 					<input type="text" id="password" placeholder="password"/><br/>
@@ -508,12 +516,12 @@ var WelcomeView = React.createClass({
 				<Header/>
 
 				<div>
-					<h5>Join the Family!</h5>
+					<p>Join the Family!</p>
 					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
 				</div><br/>
 
 				<div>
-					<h5>Already a Member?</h5>
+					<p>Already a Member?</p>
 					<button onClick={this._goToLogin} className="logInButton">Log In</button>
 				</div>
 			</div>
@@ -683,7 +691,7 @@ var AppRouter = BackboneFire.Router.extend({
 	showSetFamily: function(){
 
 		console.log("from SetFamily")
-		// new usermodel --> props --> save fam id to user modl in submit in evthandle 
+		// new usermodel --> props --> save fam id to user modl in submit in evt handle 
 		DOM.render( <SetFamilyView />, document.querySelector('.container') )
 
 	}, 
