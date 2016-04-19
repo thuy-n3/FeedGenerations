@@ -57,38 +57,30 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	}
 })
 
-
-
-
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
 		return {
 			// userRecipes: [],
 			ready:false
-
 		}
 	}, 
 
 	_goToRecipeView: function(id){
 		window.location.hash = "library/" + id 
-
 	},
 
 	_showRecipesJSX: function(mdl){
 		if (!mdl.id) return ''
 
 		return(
-			<h5>
 				<div className="libraryImgContainer">
+					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
 					<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
+					
 				</div>
-				<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
-			</h5>
 		)
 	},
-
-
 
 	componentDidMount: function(){
 		var component = this 
@@ -103,7 +95,7 @@ var RecipeLibraryView = React.createClass({
 		})
 	}, 
 
-	render: function(){
+	render: function(){ 
 
 		var component = this
 		return(
@@ -111,7 +103,7 @@ var RecipeLibraryView = React.createClass({
 				<Header />
 				<NavBar />
 				<SearchLibary />
-				<h1>Recipe Library</h1>
+				<p>Recipe Library</p>
 
 			{/*	<form onSubmit={this._handleSearchSubmit}>
 								<input type='text' id="searchlibrary" placeholder='search library' />
@@ -501,16 +493,19 @@ var SearchLibary = React.createClass({
 		var component = this 
 
 		var ref = new Firebase(`https://feedgenerations.firebaseio.com/users/${fbRef.getAuth().uid}/recipes`);
-		var typed = function(){
-			keyEvent.target.value.toLowerCase()
-		}
+		// var typed = function(){
+		// 	keyEvent.target.value.toLowerCase()
+		// }
+		var typed = keyEvent.target.value.toLowerCase()
+
 
 		if (typed.length > 0) {
 			console.log(typed)
 			console.log(`${typed}\uf8ff`)
 			ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
-			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^
+			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^	
 				function(snapshot) {
+					
 					console.log('got snapshot')
 					//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
 					snapshot.forEach(function(obj) {
@@ -525,12 +520,12 @@ var SearchLibary = React.createClass({
 			})
 		}
 
-		if(keyEvent.which === 13){
+		if(keyEvent.keyCode === 13){
 			keyEvent.preventDefault()
 			console.log(keyEvent.target.value)
-			if(typed.length > 0 ) {
-				window.location.hash = 'library/' + 'search/' + typed
-			}	
+			
+				window.location.hash = 'library/' + 'search/' + keyEvent.target.value
+		
 		}
 		
 	},
@@ -612,7 +607,7 @@ var AppRouter = BackboneFire.Router.extend({
 		var userRecipeCollection
 		if(query){
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid , query )
-			// userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+			// userxRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 			console.log('queried recipes>>>>', userRecipeCollection)
 		}
 		else{
