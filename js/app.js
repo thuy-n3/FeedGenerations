@@ -90,7 +90,7 @@ var RecipeLibraryView = React.createClass({
 
 	componentDidMount: function(){
 		var component = this 
-
+		console.log(this.props.recipeColl)
 		this.props.recipeColl.on("sync", function(){
 // alert()
 			console.log(component.props.recipeColl)
@@ -145,7 +145,7 @@ var SingleReceipeView = React.createClass({
 			return(
 				
 				<p>
-					{mdl.get("picture","displayTitle","ingredients","instructions","equipment")}
+					{mdl.get("picture","displayTitle","ingredients","instructions","equipment") }
 				</p>
 			)
 	},
@@ -294,7 +294,7 @@ var HomeView = React.createClass({
 			<div>
 				<Header />
 				<NavBar />
-				<h1>Welcome Home! </h1>
+				<p>Welcome Home!  </p>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -375,7 +375,7 @@ var SignUpView = React.createClass({
 		return (
 			<div>
 				<form onSubmit={this._signUp}>
-					<h3 className="signUp">Sign Up and Cook with your History</h3>
+					<p className="signUp">Sign Up and Cook with your History</p>
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
@@ -420,7 +420,7 @@ var LoginView = React.createClass({
 		return(
 			<div>
 				<form onSubmit={this._handleLogin}>
-					<h3 className="loginIn">Log In</h3>
+					<p className="loginIn">Log In</p>
 
 					<input type="text" id="email" placeholder="email"/><br/>
 					<input type="text" id="password" placeholder="password"/><br/>
@@ -450,13 +450,13 @@ var WelcomeView = React.createClass({
 			<div>
 				<Header/>
 
-				<div>
-					<h5>Join the Family!</h5>
+				<div className="welcomeSignUpContainer">
+					<p className="welcome_SignUpTitle">Join the Family!</p>
 					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
 				</div><br/>
 
-				<div>
-					<h5>Already a Member?</h5>
+				<div className="welcomeLogInContainer">
+					<p className="welcome_LogIn">Already a Member?</p>
 					<button onClick={this._goToLogin} className="logInButton">Log In</button>
 				</div>
 			</div>
@@ -532,9 +532,31 @@ var SearchLibary = React.createClass({
 		var typed = keyEvent.target.value.toLowerCase()
 
 
-		if (typed.length > 0) {
-			console.log(typed)
-			console.log(`${typed}\uf8ff`)
+		// if (typed.length > 0) {
+		// 	console.log(typed)
+		// 	console.log(`${typed}\uf8ff`)
+		// 	ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
+		// 	//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^	
+		// 		function(snapshot) {
+					
+		// 			console.log('got snapshot')
+		// 			//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
+		// 			snapshot.forEach(function(obj) {
+		// 				var recipeTitle = obj.val().searchTitle //the result of what is type in the query
+		// 				console.log('data item>>>',recipeTitle)
+						
+		// 				component.setState({
+		// 					currentSearchVal: recipeTitle
+		// 				})
+
+		// 			})
+		// 	})
+		// }
+
+		if(keyEvent.keyCode === 13){
+			keyEvent.preventDefault()
+
+			console.log(keyEvent.target.value)
 			ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
 			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^	
 				function(snapshot) {
@@ -542,24 +564,12 @@ var SearchLibary = React.createClass({
 					console.log('got snapshot')
 					//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
 					snapshot.forEach(function(obj) {
+						console.log(obj.val().searchTitle)
 						var recipeTitle = obj.val().searchTitle //the result of what is type in the query
-						console.log('data item>>>',recipeTitle)
-						
-						component.setState({
-							currentSearchVal: recipeTitle
-						})
-
+						React.unmountComponentAtNode(document.querySelector('.container'))
+						location.hash = "library/search/" + recipeTitle
 					})
 			})
-		}
-
-		if(keyEvent.keyCode === 13){
-			keyEvent.preventDefault()
-
-			console.log(keyEvent.target.value)
-			
-				window.location.hash = 'library/' + 'search/' + keyEvent.target.value
-		
 		}
 		
 	},
