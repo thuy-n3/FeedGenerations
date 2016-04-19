@@ -62,7 +62,6 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	}
 })
 
-
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
@@ -145,9 +144,9 @@ var SingleReceipeView = React.createClass({
 
 			return(
 				
-				<h5>
+				<p>
 					{mdl.get("picture","displayTitle","ingredients","instructions","equipment")}
-				</h5>
+				</p>
 			)
 	},
 	componentDidMount: function(){
