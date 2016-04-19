@@ -88,8 +88,8 @@ var RecipeLibraryView = React.createClass({
 		return(
 				<div className="libraryContainer">
 					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
-					<div className="recipelibraryPictureContainer">
 					<button onClick={this._handleRemoveRecipe.bind(this, mdl.id)} >X</button>
+					<div className="recipelibraryPictureContainer">
 						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					</div>
 				</div>
