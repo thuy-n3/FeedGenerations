@@ -311,10 +311,10 @@ var HomeView = React.createClass({
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
 					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
 					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
-
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
-				</form>
+
+				</form> 
 
 			</div>	
 			
