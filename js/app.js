@@ -71,6 +71,13 @@ var RecipeLibraryView = React.createClass({
 		}
 	}, 
 
+
+	_handleRemoveRecipe: function(mdl, evt){
+		console.log("model id ", mdl)
+		this.props.recipeColl.remove(mdl)
+
+	},
+
 	_goToRecipeView: function(id){
 		window.location.hash = "library/" + id 
 	},
@@ -82,6 +89,7 @@ var RecipeLibraryView = React.createClass({
 				<div className="libraryContainer">
 					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
 					<div className="recipelibraryPictureContainer">
+					<button onClick={this._handleRemoveRecipe.bind(this, mdl.id)} >X</button>
 						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					</div>
 				</div>
@@ -149,6 +157,7 @@ var SingleReceipeView = React.createClass({
 				</p>
 			)
 	},
+
 	componentDidMount: function(){
 		var component = this
 				// model = this.props.recipeMdl;
@@ -181,6 +190,15 @@ var SingleReceipeView = React.createClass({
 			})
 	},
 
+	_handleEquipment: function(){
+		if ( <h6>Equipment</h6> && this.state.userRecipes.equipment !== '' ){
+			return this.state.userRecipes.equipment
+		}
+		else{
+			return ''
+		}
+	},
+
 	render: function(){
 
 		var component = this 
@@ -199,8 +217,9 @@ var SingleReceipeView = React.createClass({
 				<h4>{this.state.userRecipes.displayTitle}</h4>
 				<h6>Ingredients</h6>
 				{this.state.userRecipes.ingredients}
-				<h6>Equipment</h6>
-				{this.state.userRecipes.equipment}
+				{/*<h6>Equipment</h6>/*}
+				{/*{this.state.userRecipes.equipment}*/}
+				{this._handleEquipment}
 				<h6>Instructions</h6>
 				{this.state.userRecipes.instructions}
 				
@@ -225,7 +244,7 @@ var HomeView = React.createClass({
 	
 	_handleFormSubmit: function(evt){
 		evt.preventDefault()
-		evt.taget.value = ""
+		
 
 		//console.log(this.state.imageFileData)
 
@@ -235,6 +254,7 @@ var HomeView = React.createClass({
 		console.log(evt.target.ingredientsText.value)
 		console.log(evt.target.instructionText.value)
 		console.log(evt.target.equipmentText.value)
+		console.log(evt.target.submittedByInput.value)
 
 
 		var userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
@@ -251,12 +271,22 @@ var HomeView = React.createClass({
 			// search_title: .toLowerCase()
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
-			instructions: evt.target.instructionText.value
+			instructions: evt.target.instructionText.value,
+			summittedBy: evt.target.submittedByInput.value
+
 
 		})
 
 		console.log(userRecipeCollection)
+
 		
+		evt.target.displayTitle.value = ''
+		evt.target.ingredientsText.value = ''
+		evt.target.equipmentText.value = ''
+		evt.target.instructionText.value = ''
+		evt.target.submittedByInput.value = ''
+		//^^^^^^clear the input box after submission^^^^^^//
+
 	},
 
 	// _handleLogOut: function(){
@@ -311,6 +341,7 @@ var HomeView = React.createClass({
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
 					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
 					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
+					<input type="text" id="submittedByInput" placeholder="Enter your name" /><br/>
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
 
@@ -379,7 +410,7 @@ var SignUpView = React.createClass({
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
-					<input type="text" id="password" placeholder="Password" /><br/>
+					<input type="password" id="password" placeholder="Password" /><br/>
 					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
 				</form>	
@@ -393,7 +424,7 @@ var LoginView = React.createClass({
 
 	_handleLogin: function(evt){
 		evt.preventDefault()
-		evt.target.value = ""
+	
 
 		var emailInput = evt.currentTarget.email.value 
 		var pwInput = evt.currentTarget.password.value
@@ -423,7 +454,7 @@ var LoginView = React.createClass({
 					<p className="loginIn">Log In</p>
 
 					<input type="text" id="email" placeholder="email"/><br/>
-					<input type="text" id="password" placeholder="password"/><br/>
+					<input type="password" id="password" placeholder="password"/><br/>
 					<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
 
 				</form>
