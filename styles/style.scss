@@ -104,8 +104,8 @@ body {
     pointer-events: none;
     user-select: none;
     transition: all 1s ease;
-    .pace-progress {
         background: #2299dd;
+    .pace-progress {
         position: fixed;
         z-index: 2000;
         top: 0;
@@ -127,3 +127,4 @@ body {
 /**
  * App code
  */
+
