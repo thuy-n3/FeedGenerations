@@ -130,4 +130,36 @@ body {
 
 .container{
     text-align: center;
+    display: inline-block;
 }
+
+.logInContainer{
+    text-align: center;
+
+    
+}
+ 
+
+
+
+
+// @media only screen and (max-width: 650px){
+
+    .contanier{
+        display: block;
+        width: 100%
+    }
+
+    .headerContainer{
+        display: inline-block; 
+        width: 100%
+
+    }
+
+    .logInViewContainer{
+        display: inline-block;; 
+        width: 100%
+    }
+
+//}
+

@@ -15,11 +15,6 @@ import _ from 'underscore'
 import Firebase from 'firebase'
 import BackboneFire from 'bbfire'
 
-import JSPDF from 'jspdf'
-
-console.log('===========jspdf==========')
-console.log(JSPDF)
-
 // console.log("=======jquery=====")
 // console.log($)
 // console.log("=======underscore=====")
@@ -38,6 +33,13 @@ var UserCollection = BackboneFire.Firebase.Collection.extend({
   initialize: function(){
   	this.url = fbRef.child('users')
   }
+})
+
+var FamiliesCollection = BackboneFire.Firebase.Collection.extend({
+	url: '', 
+	initialize: function(){
+		this.url = fbRef.child('families')
+	}
 })
 
 var UserRecipeCollection = BackboneFire.Firebase.Collection.extend({
@@ -62,43 +64,41 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	}
 })
 
+
+
+
+
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
 		return {
 			// userRecipes: [],
 			ready:false
+
 		}
 	}, 
 
-
-	_handleRemoveRecipe: function(mdl, evt){
-		console.log("model id ", mdl)
-		this.props.recipeColl.remove(mdl)
-
-	},
-
 	_goToRecipeView: function(id){
 		window.location.hash = "library/" + id 
+
 	},
 
 	_showRecipesJSX: function(mdl){
 		if (!mdl.id) return ''
 
 		return(
-				<div className="libraryContainer">
+			
+				<div className="libraryImgContainer">
+					<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
-					<button onClick={this._handleRemoveRecipe.bind(this, mdl.id)} >X</button>
-					<div className="recipelibraryPictureContainer">
-						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
-					</div>
 				</div>
+		
 		)
 	},
 
 	componentDidMount: function(){
 		var component = this 
-		console.log(this.props.recipeColl)
+
 		this.props.recipeColl.on("sync", function(){
 // alert()
 			console.log(component.props.recipeColl)
@@ -109,7 +109,7 @@ var RecipeLibraryView = React.createClass({
 		})
 	}, 
 
-	render: function(){ 
+	render: function(){
 
 		var component = this
 		return(
@@ -123,8 +123,9 @@ var RecipeLibraryView = React.createClass({
 								<input type='text' id="searchlibrary" placeholder='search library' />
 								<input className='button-primary' type='submit' value='submit' />
 			
-			
+		
 							</form>*/}
+
 
 				{this.props.recipeColl.models.map(component._showRecipesJSX)}
 
@@ -133,6 +134,7 @@ var RecipeLibraryView = React.createClass({
 	}
 
 })
+
 
 var SingleReceipeView = React.createClass({
 
@@ -153,11 +155,10 @@ var SingleReceipeView = React.createClass({
 			return(
 				
 				<p>
-					{mdl.get("picture","displayTitle","ingredients","instructions","equipment") }
+					{mdl.get("picture","displayTitle","ingredients","instructions","equipment")}
 				</p>
 			)
 	},
-
 	componentDidMount: function(){
 		var component = this
 				// model = this.props.recipeMdl;
@@ -190,15 +191,6 @@ var SingleReceipeView = React.createClass({
 			})
 	},
 
-	_handleEquipment: function(){
-		if ( <h6>Equipment</h6> && this.state.userRecipes.equipment !== '' ){
-			return this.state.userRecipes.equipment
-		}
-		else{
-			return ''
-		}
-	},
-
 	render: function(){
 
 		var component = this 
@@ -214,15 +206,15 @@ var SingleReceipeView = React.createClass({
 					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				</div>
 
-				<h4>{this.state.userRecipes.displayTitle}</h4>
-				<h6>Ingredients</h6>
+				<p>{this.state.userRecipes.displayTitle}</p>
+				<p>Ingredients</p>
 				{this.state.userRecipes.ingredients}
-				{/*<h6>Equipment</h6>/*}
-				{/*{this.state.userRecipes.equipment}*/}
-				{this._handleEquipment}
-				<h6>Instructions</h6>
+				<p>Equipment</p>
+				{this.state.userRecipes.equipment}
+				<p>Instructions</p>
 				{this.state.userRecipes.instructions}
-				
+				<p>Summitted by: {this.state.userRecipes.submittedByInput} </p>
+
 
 			</div>
 		)
@@ -272,21 +264,12 @@ var HomeView = React.createClass({
 			ingredients: evt.target.ingredientsText.value,
 			equipment: evt.target.equipmentText.value,
 			instructions: evt.target.instructionText.value,
-			summittedBy: evt.target.submittedByInput.value
-
+			summittedby: evt.target.submittedByInput.value
 
 		})
 
 		console.log(userRecipeCollection)
-
 		
-		evt.target.displayTitle.value = ''
-		evt.target.ingredientsText.value = ''
-		evt.target.equipmentText.value = ''
-		evt.target.instructionText.value = ''
-		evt.target.submittedByInput.value = ''
-		//^^^^^^clear the input box after submission^^^^^^//
-
 	},
 
 	// _handleLogOut: function(){
@@ -298,6 +281,7 @@ var HomeView = React.createClass({
 	// _handleLibrary: function(){
 	// 	window.location.hash = 'library'
 	// },
+
 
 	_handlePicture: function(evt){
 		var component = this
@@ -324,7 +308,7 @@ var HomeView = React.createClass({
 			<div>
 				<Header />
 				<NavBar />
-				<p>Welcome Home!  </p>
+				<p>Welcome Home! </p>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -337,15 +321,17 @@ var HomeView = React.createClass({
 					<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
 				</div>
 
-					<input type="text" id="displayTitle" placeholder="recipe title"/><br/>
+					<input type="text" id="displayTitle" placeholder="Enter recipe title"/><br/>
 					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
 					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
 					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
-					<input type="text" id="submittedByInput" placeholder="Enter your name" /><br/>
+					<input type="text" id="submittedByInput" placeholder="Enter your name"/><br/>
+
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
+					
 
-				</form> 
+				</form>
 
 			</div>	
 			
@@ -360,7 +346,7 @@ var SignUpView = React.createClass({
 	_signUp: function(evt){ 	//pasing the evt(clicking of the button)
 
 		evt.preventDefault()	//????
-		evt.target.value = ""
+		
 
 		var emailInput = evt.currentTarget.email.value
 		var pwInput = evt.currentTarget.password.value 
@@ -379,7 +365,7 @@ var SignUpView = React.createClass({
 			userColl.create({
 				name: nameInput,
 				email: emailInput,
-				id: authData.uid
+				id: authData.uid  //
 				})
 
 			var authDataObj = {
@@ -396,7 +382,9 @@ var SignUpView = React.createClass({
 					console.log("---signup user authenticated-------------")
 					console.log(authData)
 
-					location.hash = '' 
+					//location.hash = '' 
+					location.hash = 'setfamily'		//<<<<<------------------routing to setfamily after user acct created!!!! 
+					//after user has create a account, they need to be routed to the create family page 
 				}
 			})
 		})
@@ -406,12 +394,12 @@ var SignUpView = React.createClass({
 		return (
 			<div>
 				<form onSubmit={this._signUp}>
-					<p className="signUp">Sign Up and Cook with your History</p>
+					<h1 className="signUp">Sign Up and Cook with your History</h1>
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
-					<input type="password" id="password" placeholder="Password" /><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+					<input type="text" id="password" placeholder="Password" /><br/>
+					<input className="button-primary" type="submit" defaultValue="Sign Up" /><br/> 
 
 				</form>	
 			</div>
@@ -420,11 +408,59 @@ var SignUpView = React.createClass({
 
 })
 
+var SetFamilyView = React.createClass({
+
+	_handleSetFamily: function(evt){
+		evt.preventDefault()
+		
+		console.log(evt.currentTarget.familyNameInput.value), 
+		console.log(evt.currentTarget.familyDescriptionInput.value), 
+		console.log(evt.currentTarget.familyCreatorNameInput.value)
+
+		var familyNameInput = evt.currentTarget.familyNameInput.value
+		var familyDescriptionInput = evt.currentTarget.familyDescriptionInput.value
+		var familyCreatorNameInput = evt.currentTarget.familyCreatorNameInput.value
+
+		var newFamilyData = {
+			familyName: familyNameInput, 
+			familyDescription: familyDescriptionInput, 
+			familyCreatorName: familyCreatorNameInput
+		}
+
+		console.log("----newFamilyData--------", newFamilyData)
+
+		var familiesColl = new FamiliesCollection(fbRef.getAuth().uid)
+			familiesColl.create({
+				familyName: familyNameInput,
+				familyDescription: familyDescriptionInput, 
+				familyCreatorName: familyCreatorNameInput
+
+			
+			})
+	},
+
+	render: function(){
+		return(
+			<div className="setFamilyContainer">
+				<form onSubmit={this._handleSetFamily} >
+					<p>Create a Familly</p>
+					<input type="text" id="familyNameInput" placeholder="Enter Family Name" />
+					<input type="text" id="familyDescriptionInput" placeholder="Enter Family Description" />
+					<input type="text" id="familyCreatorNameInput" placeholder="Enter Creator's Name" />
+					<input type="submit" id="familySummitButton" defaultValue="submit" />
+				</form>
+			</div>
+		)
+	}
+
+
+})
+
 var LoginView = React.createClass({
 
 	_handleLogin: function(evt){
 		evt.preventDefault()
-	
+		
 
 		var emailInput = evt.currentTarget.email.value 
 		var pwInput = evt.currentTarget.password.value
@@ -449,12 +485,12 @@ var LoginView = React.createClass({
 
 	render: function(){
 		return(
-			<div>
+			<div className="LogInContainer">
 				<form onSubmit={this._handleLogin}>
-					<p className="loginIn">Log In</p>
+					<h1 className="logIn">Log In</h1>
 
 					<input type="text" id="email" placeholder="email"/><br/>
-					<input type="password" id="password" placeholder="password"/><br/>
+					<input type="text" id="password" placeholder="password"/><br/>
 					<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
 
 				</form>
@@ -481,13 +517,13 @@ var WelcomeView = React.createClass({
 			<div>
 				<Header/>
 
-				<div className="welcomeSignUpContainer">
-					<p className="welcome_SignUpTitle">Join the Family!</p>
+				<div>
+					<p>Join the Family!</p>
 					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
 				</div><br/>
 
-				<div className="welcomeLogInContainer">
-					<p className="welcome_LogIn">Already a Member?</p>
+				<div>
+					<p>Already a Member?</p>
 					<button onClick={this._goToLogin} className="logInButton">Log In</button>
 				</div>
 			</div>
@@ -524,7 +560,7 @@ var NavBar = React.createClass({
 	_handleLogOut: function(){
 	fbRef.unauth();
 	// MyAppRtr.navigate('login', {trigger: true})
-	window.location.hash = 'login'
+	window.location.hash = 'welcome'
 	},
 
 	_handleHome: function(){
@@ -557,50 +593,37 @@ var SearchLibary = React.createClass({
 		var component = this 
 
 		var ref = new Firebase(`https://feedgenerations.firebaseio.com/users/${fbRef.getAuth().uid}/recipes`);
-		// var typed = function(){
-		// 	keyEvent.target.value.toLowerCase()
-		// }
-		var typed = keyEvent.target.value.toLowerCase()
+		var typed = function(){
+			keyEvent.target.value.toLowerCase()
+		}
 
-
-		// if (typed.length > 0) {
-		// 	console.log(typed)
-		// 	console.log(`${typed}\uf8ff`)
-		// 	ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
-		// 	//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^	
-		// 		function(snapshot) {
-					
-		// 			console.log('got snapshot')
-		// 			//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
-		// 			snapshot.forEach(function(obj) {
-		// 				var recipeTitle = obj.val().searchTitle //the result of what is type in the query
-		// 				console.log('data item>>>',recipeTitle)
-						
-		// 				component.setState({
-		// 					currentSearchVal: recipeTitle
-		// 				})
-
-		// 			})
-		// 	})
-		// }
-
-		if(keyEvent.keyCode === 13){
-			keyEvent.preventDefault()
-
-			console.log(keyEvent.target.value)
+		if (typed.length > 0) {
+			console.log(typed)
+			console.log(`${typed}\uf8ff`)
 			ref.orderByChild('searchTitle').startAt(typed).endAt(`${typed}\uf8ff`).on("value",	
-			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^	
+			//^^^^^^^looking at the recipes title that startAt and endAt (with what is typed) - "uf8ff" is end character/apple logo ^^^^^^^^
 				function(snapshot) {
-					
 					console.log('got snapshot')
 					//snapshot is data that return from the query | below - the forEach is looking over the data for the title that was typed
 					snapshot.forEach(function(obj) {
-						console.log(obj.val().searchTitle)
 						var recipeTitle = obj.val().searchTitle //the result of what is type in the query
-						React.unmountComponentAtNode(document.querySelector('.container'))
-						location.hash = "library/search/" + recipeTitle
+						console.log('data item>>>',recipeTitle)
+						
+						component.setState({
+							currentSearchVal: recipeTitle
+						})
+
 					})
 			})
+		}
+
+		if(keyEvent.which === 13){
+			keyEvent.preventDefault()
+
+			console.log(keyEvent.target.value)
+			if(typed.length > 0 ) {
+				window.location.hash = 'library/' + 'search/' + typed
+			}	
 		}
 		
 	},
@@ -639,6 +662,7 @@ var AppRouter = BackboneFire.Router.extend({
 		"signup"	         			: "showSignUpView",
 		"login"		         			: "showLoginView",
 		"welcome"						: "showWelcome",
+		"setfamily"						: "showSetFamily",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
@@ -666,6 +690,14 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 
+	showSetFamily: function(){
+
+		console.log("from SetFamily")
+		// new usermodel --> props --> save fam id to user modl in submit in evt handle 
+		DOM.render( <SetFamilyView />, document.querySelector('.container') )
+
+	}, 
+
 	showWelcome: function(){
 
 		console.log("from WelcomeVIew")
@@ -690,7 +722,7 @@ var AppRouter = BackboneFire.Router.extend({
 		var userRecipeCollection
 		if(query){
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid , query )
-			// userxRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
+			// userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 			console.log('queried recipes>>>>', userRecipeCollection)
 		}
 		else{
@@ -758,7 +790,6 @@ var AppRouter = BackboneFire.Router.extend({
 
 
 var MyAppRtr = new AppRouter()
-
 
 // Create login u.i. functionality
 // 
