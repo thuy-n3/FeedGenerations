@@ -390,7 +390,7 @@ var SignUpView = React.createClass({
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
-					<input type="text" id="password" placeholder="Password" /><br/>
+					<input type="password" id="password" placeholder="Password" /><br/>
 					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
 				</form>	
@@ -434,7 +434,7 @@ var LoginView = React.createClass({
 					<h3 className="loginIn">Log In</h3>
 
 					<input type="text" id="email" placeholder="email"/><br/>
-					<input type="text" id="password" placeholder="password"/><br/>
+					<input type="password" id="password" placeholder="password"/><br/>
 					<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
 
 				</form>
