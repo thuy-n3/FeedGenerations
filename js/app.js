@@ -296,7 +296,7 @@ var HomeView = React.createClass({
 			<div>
 				<Header />
 				<NavBar />
-				<p>Welcome Home!  </p>
+				<p className="welcomeTitle">Welcome Home!  </p>
 				{/*{fbRef.getAuth().uid}*/}
 
 
