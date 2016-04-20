@@ -15,6 +15,10 @@ import _ from 'underscore'
 import Firebase from 'firebase'
 import BackboneFire from 'bbfire'
 
+import jspdf from 'jspdf'
+
+console.log("=======jspdf=====")
+console.log(jspdf)
 // console.log("=======jquery=====")
 // console.log($)
 // console.log("=======underscore=====")
@@ -196,14 +200,15 @@ var SingleReceipeView = React.createClass({
 					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				</div>
 
-				<h4>{this.state.userRecipes.displayTitle}</h4>
-				<h6>Ingredients</h6>
-				{this.state.userRecipes.ingredients}
-				<h6>Equipment</h6>
-				{this.state.userRecipes.equipment}
-				<h6>Instructions</h6>
-				{this.state.userRecipes.instructions}
-				
+				<div className="singleRecipeTextContainer">
+					<h4>{this.state.userRecipes.displayTitle}</h4>
+					<h6>Ingredients</h6>
+					{this.state.userRecipes.ingredients}
+					<h6>Equipment</h6>
+					{this.state.userRecipes.equipment}
+					<h6>Instructions</h6>
+					{this.state.userRecipes.instructions}
+				</div>
 
 			</div>
 		)
@@ -421,6 +426,9 @@ var LoginView = React.createClass({
 	render: function(){
 		return(
 			<div>
+
+				<Header />
+
 				<form onSubmit={this._handleLogin}>
 					<h3 className="loginIn">Log In</h3>
 
@@ -499,6 +507,7 @@ var NavBar = React.createClass({
 	},
 
 	_handleLogOut: function(){
+
 	fbRef.unauth();
 	// MyAppRtr.navigate('login', {trigger: true})
 	window.location.hash = 'login'
