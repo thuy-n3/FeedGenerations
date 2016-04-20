@@ -190,13 +190,15 @@ var SingleReceipeView = React.createClass({
 		return(
 			<div>
 				<Header />
-				<NavBar />
+				<NavBar /><br/>
+
+				<h4>{this.state.userRecipes.displayTitle}</h4>
 
 				<div className="singleImgContainer">
 					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				</div>
 
-				<h4>{this.state.userRecipes.displayTitle}</h4>
+				
 				<h6>Ingredients</h6>
 				{this.state.userRecipes.ingredients}
 				<h6>Equipment</h6>
