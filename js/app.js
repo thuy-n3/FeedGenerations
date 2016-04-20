@@ -187,29 +187,57 @@ var SingleReceipeView = React.createClass({
 
 		// debugger;
 
+
+		//create ingredient JSX 
+		var splitOnNewIngredient = this.state.userRecipes.ingredients.split("\n")
+
+		var ingredientasLi_elements = splitOnNewIngredient.map(function(ingredientString){
+			return(
+				<li className="ingredientList"> 
+					{ingredientString}
+				</li>
+				)
+		})
+
+		//create instrustion JSX 
+		var splitOnNewLine = this.state.userRecipes.instructions.split("\n")
+		console.log(splitOnNewLine)
+
+		var instructionsAsP_elements = splitOnNewLine.map(function(instructionString, index){
+			return(
+				<div className="recipeStep">
+					<h5>{index}</h5>
+					<p>{instructionString}</p>
+				</div>
+			) 
+		})
+
 		return(
 			<div>
 				<Header />
 				<NavBar /><br/>
 
-				<h4>{this.state.userRecipes.displayTitle}</h4>
+				<h2>{this.state.userRecipes.displayTitle}</h2>
 
 				<div className="singleImgContainer">
 					<img className="SingleViewPicture" src={this.state.userRecipes.picture} />
 				</div>
 
 				
-				<h6>Ingredients</h6>
-				{this.state.userRecipes.ingredients}
-				<h6>Equipment</h6>
+				<h4>Ingredients</h4>
+				<ul>{ingredientasLi_elements}</ul>
+				<h4>Equipment</h4>
 				{this.state.userRecipes.equipment}
-				<h6>Instructions</h6>
-				{this.state.userRecipes.instructions}
+				<h4>Instructions</h4>
+					
+
+				{instructionsAsP_elements}
+				
 				
 
 			</div>
 		)
-				// {this.props.recipeMdl.get('title')}
+				// {this.props.recipeMdl.get('title')}	
 
 	}
 
@@ -295,7 +323,7 @@ var HomeView = React.createClass({
 
 	render:function(){
 		return(
-			<div>
+			<div >
 				<Header />
 				<NavBar />
 				<h3 className="welcomeTitle">Welcome Home!  </h3>
@@ -304,17 +332,28 @@ var HomeView = React.createClass({
 
 				<form onSubmit={this._handleFormSubmit}>
 
+					<h4>Recipe Title</h4>
+					<div className="six columns only">
+						<input className="u-full-width" type="text" id="displayTitle" placeholder="recipe title"/>
+					</div>
+					
+
+					<h4 className="u-cf">Ingredients</h4>
+					<textarea className="u-full-width" type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
+
+					<h4>Equipments</h4>
+					<textarea className="u-full-width" type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
+
+					<h4>Instructions</h4>
+					<textarea className="u-full-width" type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
+
+					<h4>Add Image</h4>
 					<input type="file" id="imageInput" onChange={this._handlePicture}/><br/>
 
+					<div className="previewImgContainer">
+						<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
+					</div>
 
-				<div className="previewImgContainer">
-					<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
-				</div>
-
-					<input type="text" id="displayTitle" placeholder="recipe title"/><br/>
-					<textarea type="text" id="ingredientsText" placeholder="Enter your ingredients"/><br/>
-					<textarea type="text" id="equipmentText" placeholder="Enter your equipments"/><br/>
-					<textarea type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
 
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
@@ -380,6 +419,8 @@ var SignUpView = React.createClass({
 	},
 
 	render: function(){
+		
+	
 		return (
 			<div>
 
@@ -394,6 +435,7 @@ var SignUpView = React.createClass({
 					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
 				</form>	
+
 			</div>
 		)
 	}
@@ -429,7 +471,11 @@ var LoginView = React.createClass({
 
 	render: function(){
 		return(
-			<div>
+			<div className="logInContainer">
+
+			<Header />
+		
+
 				<form onSubmit={this._handleLogin}>
 					<h3 className="loginIn">Log In</h3>
 
@@ -459,6 +505,9 @@ var WelcomeView = React.createClass({
 
 		return(
 			<div>
+
+				<img src="" />
+
 				<Header/>
 
 				<div className="welcomeSignUpContainer">
