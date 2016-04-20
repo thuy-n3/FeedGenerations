@@ -80,7 +80,7 @@ var RecipeLibraryView = React.createClass({
 
 		return(
 				<div className="libraryContainer">
-					<p onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </p>
+					<h5 onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </h5>
 					<div className="recipelibraryPictureContainer">
 						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					</div>
@@ -109,7 +109,7 @@ var RecipeLibraryView = React.createClass({
 				<Header />
 				<NavBar />
 				<SearchLibary />
-				<p>Recipe Library</p>
+				<h2>Recipe Library</h2>
 
 			{/*	<form onSubmit={this._handleSearchSubmit}>
 								<input type='text' id="searchlibrary" placeholder='search library' />
@@ -144,9 +144,9 @@ var SingleReceipeView = React.createClass({
 
 			return(
 				
-				<p>
+				<h5>
 					{mdl.get("picture","displayTitle","ingredients","instructions","equipment") }
-				</p>
+				</h5>
 			)
 	},
 	componentDidMount: function(){
@@ -296,7 +296,7 @@ var HomeView = React.createClass({
 			<div>
 				<Header />
 				<NavBar />
-				<p className="welcomeTitle">Welcome Home!  </p>
+				<h3 className="welcomeTitle">Welcome Home!  </h3>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -380,8 +380,11 @@ var SignUpView = React.createClass({
 	render: function(){
 		return (
 			<div>
+
+				<Header />
+
 				<form onSubmit={this._signUp}>
-					<p className="signUp">Sign Up and Cook with your History</p>
+					<h3 className="signUp">Sign Up and Cook with your History</h3>
 
 					<input type="text" id="name" placeholder="Name" /><br/>
 					<input type="text" id="email" placeholder="Email" /><br/>
@@ -426,7 +429,7 @@ var LoginView = React.createClass({
 		return(
 			<div>
 				<form onSubmit={this._handleLogin}>
-					<p className="loginIn">Log In</p>
+					<h3 className="loginIn">Log In</h3>
 
 					<input type="text" id="email" placeholder="email"/><br/>
 					<input type="text" id="password" placeholder="password"/><br/>
@@ -457,12 +460,12 @@ var WelcomeView = React.createClass({
 				<Header/>
 
 				<div className="welcomeSignUpContainer">
-					<p className="welcome_SignUpTitle">Join the Family!</p>
+					<h4 className="welcome_SignUpTitle">Join the Family!</h4>
 					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
 				</div><br/>
 
 				<div className="welcomeLogInContainer">
-					<p className="welcome_LogIn">Already a Member?</p>
+					<h4 className="welcome_LogIn">Already a Member?</h4>
 					<button onClick={this._goToLogin} className="logInButton">Log In</button>
 				</div>
 			</div>
@@ -585,7 +588,7 @@ var SearchLibary = React.createClass({
 			<div className="searchContainer">
 				<form>
 					<input onKeyDown={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
-					<p>{this.state.currentSearchVal}</p>
+					<h5>{this.state.currentSearchVal}</h5>
 				</form>
 			</div>
 		)
