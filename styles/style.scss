@@ -12,6 +12,11 @@
     transition-timing-function: ease;
 }
 
+img{
+    display: block; 
+    max-width: 100%;
+}
+
 /**
  * GRIDS
  */
@@ -112,7 +117,9 @@ body {
     color: #FFF;
     background-color: #FBC701;
     border-color:  #FBC701;
+
 }
+
 
  .columns.only {
     margin-left: 0
@@ -218,16 +225,18 @@ body {
     text-align: center;
 }
 
-html,body,.app{
+.app{
     height: 100vh; 
     width: 100%;
     margin: 0px;
 }
 
 .contentWrapper{
-    padding-top: 19%;
+    padding-top: 16%;
 }
 
 
-
+.searchContainer{
+    text-align: center;
+}
 

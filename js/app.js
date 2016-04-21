@@ -105,7 +105,7 @@ var RecipeLibraryView = React.createClass({
 
 		var component = this
 		return(
-			<div>
+			<div className="container">
 				<Header />
 				<NavBar />
 				<SearchLibary />
@@ -213,7 +213,7 @@ var SingleReceipeView = React.createClass({
 		})
 
 		return(
-			<div>
+			<div className="container">
 				<Header />
 				<NavBar /><br/>
 
@@ -323,7 +323,7 @@ var HomeView = React.createClass({
 
 	render:function(){
 		return(
-			<div >
+			<div className="container">
 				<Header />
 				<NavBar />
 				<h3 className="welcomeTitle">Welcome Home!  </h3>
@@ -419,24 +419,23 @@ var SignUpView = React.createClass({
 	},
 
 	render: function(){
-		
 	
 		return (
-			<div>
+			<div className="signUpContainer">
 
-				<div className="signUpContainer">
+				<div className="container">
 
-				<Header />
+					<Header />
 
-				<form onSubmit={this._signUp}>
-					<h3 className="signUp">Sign Up and Cook with your History</h3>
+					<form onSubmit={this._signUp}>
+						<h3 className="signUp">Sign Up and Cook with your History</h3>
 
-					<input type="text" id="name" placeholder="Name" /><br/>
-					<input type="text" id="email" placeholder="Email" /><br/>
-					<input type="password" id="password" placeholder="Password" /><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+						<input type="text" id="name" placeholder="Name" /><br/>
+						<input type="text" id="email" placeholder="Email" /><br/>
+						<input type="password" id="password" placeholder="Password" /><br/>
+						<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
-				</form>	
+					</form>	
 
 				</div>
 
@@ -475,18 +474,19 @@ var LoginView = React.createClass({
 
 	render: function(){
 		return(
-			<div className="logInContainer">
+			<div className="logInContainer ">
+				<div className="container">
+					<Header />
 
-				<Header />
+					<form onSubmit={this._handleLogin}>
+						<h3 className="loginIn">Log In</h3>
 
-				<form onSubmit={this._handleLogin}>
-					<h3 className="loginIn">Log In</h3>
+						<input type="text" id="email" placeholder="email"/><br/>
+						<input type="password" id="password" placeholder="password"/><br/>
+						<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
 
-					<input type="text" id="email" placeholder="email"/><br/>
-					<input type="password" id="password" placeholder="password"/><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
-
-				</form>
+					</form>
+				</div>
 			</div>
 		)
 	}
@@ -510,20 +510,20 @@ var WelcomeView = React.createClass({
 		return(
 			<div className="welcomeContainer">
 
-				<div className="contentWrapper"> 
-				<Header/>
+				<div className="container contentWrapper"> 
+					<Header/>
 
-					<div className="welcomeSignUpContainer">
-						<h4 className="welcome_SignUpTitle">Join the Family!</h4>
-						<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
-					</div><br/>
+						<div className="welcomeSignUpContainer">
+							<h4 className="welcome_SignUpTitle">Join the Family!</h4>
+							<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
+						</div><br/>
 
-					<div className="welcomeLogInContainer">
-						<h4 className="welcome_LogIn">Already a Member?</h4>
-						<button onClick={this._goToLogin} className="logInButton">Log In</button>
+						<div className="welcomeLogInContainer">
+							<h4 className="welcome_LogIn">Already a Member?</h4>
+							<button onClick={this._goToLogin} className="logInButton">Log In</button>
+						</div>
+
 					</div>
-
-				</div>
 			</div>
 		)
 	}
@@ -540,7 +540,7 @@ var Header = React.createClass({
 
 	render: function(){
 		return(
-			<div className="headerContainer">
+			<div className="headerContainer container">
 				<h1 className="headerTitle">Feed Generations</h1>
 		 		{/*<button onClick={this._handleLogOut}>Log Out</button>*/}
 			</div>
@@ -568,7 +568,7 @@ var NavBar = React.createClass({
 
 	render: function(){
 		return(
-			<div className="navContainer">
+			<div className="navContainer ">
 				<button className="home" onClick={this._handleHome}>Home</button>
 				<button className="library" onClick={this._handleLibrary}>Library</button>
 				<button className="family" >Family</button>
@@ -658,7 +658,7 @@ var SearchLibary = React.createClass({
 
 	render: function(){
 		return(
-			<div className="searchContainer">
+			<div className="searchContainer ">
 				<form>
 					<input onKeyDown={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
 					<h5>{this.state.currentSearchVal}</h5>
