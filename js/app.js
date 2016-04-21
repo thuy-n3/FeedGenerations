@@ -64,6 +64,12 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	}
 })
 
+var UserModel = BackboneFire.Firebase.Model.extend({
+	url: '', 
+	initialize: function(uid){
+		this.url = `https://feedgenerations.firebaseio.com/$(uid)`
+	}
+})
 
 
 
