@@ -109,7 +109,7 @@ var RecipeLibraryView = React.createClass({
 				<Header />
 				<NavBar />
 				<SearchLibary />
-				<h2>Recipe Library</h2>
+				<h2 id="libraryTitle">Recipe Library</h2>
 
 			{/*	<form onSubmit={this._handleSearchSubmit}>
 								<input type='text' id="searchlibrary" placeholder='search library' />
@@ -212,6 +212,8 @@ var SingleReceipeView = React.createClass({
 			) 
 		})
 
+
+
 		return(
 			<div className="container">
 				<Header />
@@ -226,11 +228,13 @@ var SingleReceipeView = React.createClass({
 				
 				<h4>Ingredients</h4>
 				<ul>{ingredientasLi_elements}</ul>
-				<h4>Equipment</h4>
-				{this.state.userRecipes.equipment}
-				<h4>Instructions</h4>
-					
 
+				<h4>Equipment</h4>
+				{this._handleEquipment}
+				{/*{this.state.userRecipes.equipment}*/}
+
+
+				<h4>Instructions</h4>
 				{instructionsAsP_elements}
 				
 				
@@ -326,7 +330,7 @@ var HomeView = React.createClass({
 			<div className="container">
 				<Header />
 				<NavBar />
-				<h3 className="welcomeTitle">Welcome Home!  </h3>
+				<h3 className="welcomeTitle">Welcome Home! </h3>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -433,7 +437,7 @@ var SignUpView = React.createClass({
 						<input type="text" id="name" placeholder="Name" /><br/>
 						<input type="text" id="email" placeholder="Email" /><br/>
 						<input type="password" id="password" placeholder="Password" /><br/>
-						<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+						<input className="button-primary" type="submit" defaultValue="Sign Up" /><br/> 
 
 					</form>	
 

@@ -120,6 +120,9 @@ body {
 
 }
 
+fieldset, input, select, textarea {
+ margin-bottom: 0px;
+}
 
  .columns.only {
     margin-left: 0
@@ -190,9 +193,6 @@ body {
     list-style-type: none;
 }
 
-// .headerContainer{
-//     margin-top: 30%;
-// }
 
 .welcomeContainer{
     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
@@ -207,15 +207,9 @@ body {
     background-size: cover;
     height: 100vh;
     width: 100%;
+    padding-top: 16%;
 }
 
-
-// .signUp{
-//     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
-//     background-size: cover;
-//     height: 100vh;
-//     width: 100%;
-// }
 
 .signUpContainer{
     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
@@ -223,6 +217,7 @@ body {
     height: 100vh;
     width: 100%; 
     text-align: center;
+    padding-top: 14%;
 }
 
 .app{
@@ -235,8 +230,9 @@ body {
     padding-top: 16%;
 }
 
-
 .searchContainer{
     text-align: center;
+    padding-top: 4%;
 }
+
 
