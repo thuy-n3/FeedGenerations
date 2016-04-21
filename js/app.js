@@ -426,6 +426,7 @@ var SignUpView = React.createClass({
 
 				<Header />
 
+
 				<form onSubmit={this._signUp}>
 					<h3 className="signUp">Sign Up and Cook with your History</h3>
 
@@ -474,7 +475,8 @@ var LoginView = React.createClass({
 			<div className="logInContainer">
 
 			<Header />
-		
+
+			
 
 				<form onSubmit={this._handleLogin}>
 					<h3 className="loginIn">Log In</h3>
@@ -492,6 +494,7 @@ var LoginView = React.createClass({
 
 var WelcomeView = React.createClass({
 
+	initialize: document.querySelector(body)
 
 	_goToSignUp: function(){
 		location.hash = 'signup'
@@ -505,8 +508,6 @@ var WelcomeView = React.createClass({
 
 		return(
 			<div>
-
-				<img src="" />
 
 				<Header/>
 
@@ -572,6 +573,23 @@ var NavBar = React.createClass({
 		)
 	}
 })
+
+
+// var WelcomeNav = React.createClass({
+
+// 	_handleGoBack: function(){
+// 		window.location.hash = 'welcome'
+// 	},
+
+// 	render: function(){
+// 		return(
+// 			<div className="welcomeNavContainer">
+// 				<button className="goBack" onClick={this._handleGoBack}>Go Back</button>
+// 			</div>
+// 		)
+// 	}
+// })
+
 
 var SearchLibary = React.createClass({
 	getInitialState: function(){

@@ -130,10 +130,9 @@ body {
 // }
 
 body{
-    background-image: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg');
-    //background-repeat: no-repeat;
-    background-size: 100%;
-    background-size: center center fixed;
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+
 }
 
 
@@ -184,6 +183,6 @@ body{
     list-style-type: none;
 }
 
-.headerTitle{
-
+.headerContainer{
+    margin-top: 30%;
 }
