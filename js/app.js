@@ -364,7 +364,9 @@ var HomeView = React.createClass({
 
 					<h4>Recipe Title</h4>
 					<div className="six columns only">
-						<input className="u-full-width" type="text" id="displayTitle" placeholder="Enter recipe title"/>
+					
+						<input className="u-full-width" type="text" id="displayTitle" placeholder="Enter your recipe title"/>
+
 					</div>
 					
 
