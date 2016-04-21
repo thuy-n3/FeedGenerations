@@ -105,7 +105,7 @@ var RecipeLibraryView = React.createClass({
 
 		var component = this
 		return(
-			<div>
+			<div className="container">
 				<Header />
 				<NavBar />
 				<SearchLibary />
@@ -213,7 +213,7 @@ var SingleReceipeView = React.createClass({
 		})
 
 		return(
-			<div>
+			<div className="container">
 				<Header />
 				<NavBar /><br/>
 
@@ -323,7 +323,7 @@ var HomeView = React.createClass({
 
 	render:function(){
 		return(
-			<div >
+			<div className="container">
 				<Header />
 				<NavBar />
 				<h3 className="welcomeTitle">Welcome Home!  </h3>
@@ -334,7 +334,9 @@ var HomeView = React.createClass({
 
 					<h4>Recipe Title</h4>
 					<div className="six columns only">
+					
 						<input className="u-full-width" type="text" id="displayTitle" placeholder="Enter your recipe title"/>
+
 					</div>
 					
 
@@ -419,22 +421,25 @@ var SignUpView = React.createClass({
 	},
 
 	render: function(){
-		
 	
 		return (
-			<div>
+			<div className="signUpContainer">
 
-				<Header />
+				<div className="container">
 
-				<form onSubmit={this._signUp}>
-					<h3 className="signUp">Sign Up and Cook with your History</h3>
+					<Header />
 
-					<input type="text" id="name" placeholder="Name" /><br/>
-					<input type="text" id="email" placeholder="Email" /><br/>
-					<input type="password" id="password" placeholder="Password" /><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+					<form onSubmit={this._signUp}>
+						<h3 className="signUp">Sign Up and Cook with your History</h3>
 
-				</form>	
+						<input type="text" id="name" placeholder="Name" /><br/>
+						<input type="text" id="email" placeholder="Email" /><br/>
+						<input type="password" id="password" placeholder="Password" /><br/>
+						<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+
+					</form>	
+
+				</div>
 
 			</div>
 		)
@@ -471,19 +476,19 @@ var LoginView = React.createClass({
 
 	render: function(){
 		return(
-			<div className="logInContainer">
+			<div className="logInContainer ">
+				<div className="container">
+					<Header />
 
-			<Header />
-		
+					<form onSubmit={this._handleLogin}>
+						<h3 className="loginIn">Log In</h3>
 
-				<form onSubmit={this._handleLogin}>
-					<h3 className="loginIn">Log In</h3>
+						<input type="text" id="email" placeholder="email"/><br/>
+						<input type="password" id="password" placeholder="password"/><br/>
+						<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
 
-					<input type="text" id="email" placeholder="email"/><br/>
-					<input type="password" id="password" placeholder="password"/><br/>
-					<input className="button-primary" type="submit" defaultValue="Log In"/><br/>
-
-				</form>
+					</form>
+				</div>
 			</div>
 		)
 	}
@@ -491,6 +496,7 @@ var LoginView = React.createClass({
 })
 
 var WelcomeView = React.createClass({
+
 
 
 	_goToSignUp: function(){
@@ -504,21 +510,22 @@ var WelcomeView = React.createClass({
 	render: function(){
 
 		return(
-			<div>
+			<div className="welcomeContainer">
 
-				<img src="" />
+				<div className="container contentWrapper"> 
+					<Header/>
 
-				<Header/>
+						<div className="welcomeSignUpContainer">
+							<h4 className="welcome_SignUpTitle">Join the Family!</h4>
+							<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
+						</div><br/>
 
-				<div className="welcomeSignUpContainer">
-					<h4 className="welcome_SignUpTitle">Join the Family!</h4>
-					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
-				</div><br/>
+						<div className="welcomeLogInContainer">
+							<h4 className="welcome_LogIn">Already a Member?</h4>
+							<button onClick={this._goToLogin} className="logInButton">Log In</button>
+						</div>
 
-				<div className="welcomeLogInContainer">
-					<h4 className="welcome_LogIn">Already a Member?</h4>
-					<button onClick={this._goToLogin} className="logInButton">Log In</button>
-				</div>
+					</div>
 			</div>
 		)
 	}
@@ -535,7 +542,7 @@ var Header = React.createClass({
 
 	render: function(){
 		return(
-			<div className="headerContainer">
+			<div className="headerContainer container">
 				<h1 className="headerTitle">Feed Generations</h1>
 		 		{/*<button onClick={this._handleLogOut}>Log Out</button>*/}
 			</div>
@@ -563,7 +570,7 @@ var NavBar = React.createClass({
 
 	render: function(){
 		return(
-			<div className="navContainer">
+			<div className="navContainer ">
 				<button className="home" onClick={this._handleHome}>Home</button>
 				<button className="library" onClick={this._handleLibrary}>Library</button>
 				<button className="family" >Family</button>
@@ -572,6 +579,23 @@ var NavBar = React.createClass({
 		)
 	}
 })
+
+
+// var WelcomeNav = React.createClass({
+
+// 	_handleGoBack: function(){
+// 		window.location.hash = 'welcome'
+// 	},
+
+// 	render: function(){
+// 		return(
+// 			<div className="welcomeNavContainer">
+// 				<button className="goBack" onClick={this._handleGoBack}>Go Back</button>
+// 			</div>
+// 		)
+// 	}
+// })
+
 
 var SearchLibary = React.createClass({
 	getInitialState: function(){
@@ -626,7 +650,7 @@ var SearchLibary = React.createClass({
 					snapshot.forEach(function(obj) {
 						console.log(obj.val().searchTitle)
 						var recipeTitle = obj.val().searchTitle //the result of what is type in the query
-						React.unmountComponentAtNode(document.querySelector('.container'))
+						React.unmountComponentAtNode(document.querySelector('.app'))
 						location.hash = "library/search/" + recipeTitle
 					})
 			})
@@ -636,7 +660,7 @@ var SearchLibary = React.createClass({
 
 	render: function(){
 		return(
-			<div className="searchContainer">
+			<div className="searchContainer ">
 				<form>
 					<input onKeyDown={this._handleSearchSubmit} type='text' id="searchlibrary" placeholder='search library' />
 					<h5>{this.state.currentSearchVal}</h5>
@@ -683,7 +707,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from authView")
 
-		DOM.render( <SignUpView />, document.querySelector('.container') )
+		DOM.render( <SignUpView />, document.querySelector('.app') )
 
 	},
 
@@ -691,7 +715,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from LoginView")
 
-		DOM.render( <LoginView />, document.querySelector('.container') )
+		DOM.render( <LoginView />, document.querySelector('.app') )
 
 	},
 
@@ -699,7 +723,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from WelcomeVIew")
 
-		DOM.render( <WelcomeView />, document.querySelector('.container') )
+		DOM.render( <WelcomeView />, document.querySelector('.app') )
 
 	},
 
@@ -707,7 +731,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from HomeView")
 
-		DOM.render( <HomeView />, document.querySelector('.container') )
+		DOM.render( <HomeView />, document.querySelector('.app') )
 
 	},
 
@@ -726,7 +750,7 @@ var AppRouter = BackboneFire.Router.extend({
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 		}
 
-		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.container') )
+		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.app') )
 	},
 
 	showSingleRecipe: function(recipeId){
@@ -738,9 +762,9 @@ var AppRouter = BackboneFire.Router.extend({
 
 		var singleRecipeModel_inst = new SingleRecipeModel( fbRef.getAuth().uid, recipeId)
 
-		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.container') )
+		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.app') )
     // singleRecipeModel_inst.on("sync", function(data){
-		DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.container') )
+		DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.app') )
 		// })
 	},
 

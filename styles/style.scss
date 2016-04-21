@@ -12,6 +12,11 @@
     transition-timing-function: ease;
 }
 
+img{
+    display: block; 
+    max-width: 100%;
+}
+
 /**
  * GRIDS
  */
@@ -70,9 +75,9 @@
  * GENERAL
  */
 
-img {
-    max-width: 100%;
-}
+// img {
+//     max-width: 100%;
+// }
 body {
     font-family: 'San Francisco', 'Helvetica', 'Trebuchet MS', Arial, sans-serif;
 }
@@ -112,7 +117,9 @@ body {
     color: #FFF;
     background-color: #FBC701;
     border-color:  #FBC701;
+
 }
+
 
  .columns.only {
     margin-left: 0
@@ -129,15 +136,14 @@ body {
 //     background-size: center center fixed;
 // }
 
-body{
-    background-image: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg');
-    //background-repeat: no-repeat;
-    background-size: 100%;
-    background-size: center center fixed;
-}
+// body{
+//     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+//     background-size: cover;
+
+// }
 
 
-.container{
+.app{
   
 }
 
@@ -184,11 +190,62 @@ body{
     list-style-type: none;
 }
 
-.headerTitle{
+// .headerContainer{
+//     margin-top: 30%;
+// }
 
+.welcomeContainer{
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+
+}
+
+.logInContainer{
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100%;
+}
+
+
+// .signUp{
+//     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+//     background-size: cover;
+//     height: 100vh;
+//     width: 100%;
+// }
+
+.signUpContainer{
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100%; 
+    text-align: center;
+}
+
+.app{
+    height: 100vh; 
+    width: 100%;
+    margin: 0px;
+}
+
+.contentWrapper{
+    padding-top: 16%;
+}
+
+
+.searchContainer{
+    text-align: center;
+}
+
+<<<<<<< HEAD
 }
 
 .searchContainer{
     text-align: center;
 }
 
+=======
+>>>>>>> styling
