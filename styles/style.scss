@@ -194,17 +194,36 @@ body {
     width: 100%;
 }
 
-html,body,.app{
-    height: 100%; 
+.logInContainer{
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
     width: 100%;
 }
 
-html{
-    margin: 0px !important; 
+
+// .signUp{
+//     background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+//     background-size: cover;
+//     height: 100vh;
+//     width: 100%;
+// }
+
+.signUpContainer{
+    background: url('./image/bigstock-Baking-Background-With-Blank-C-81765317.jpg') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    width: 100%; 
+}
+
+html,body,.app{
+    height: 100%; 
+    width: 100%;
+    margin: 0px;
 }
 
 .contentWrapper{
-    padding-top: 15%;
+    padding-top: 19%;
 }
 
 

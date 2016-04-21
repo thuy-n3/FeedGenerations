@@ -424,8 +424,9 @@ var SignUpView = React.createClass({
 		return (
 			<div>
 
-				<Header />
+				<div className="signUpContainer">
 
+				<Header />
 
 				<form onSubmit={this._signUp}>
 					<h3 className="signUp">Sign Up and Cook with your History</h3>
@@ -436,6 +437,8 @@ var SignUpView = React.createClass({
 					<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
 
 				</form>	
+
+				</div>
 
 			</div>
 		)
@@ -474,9 +477,7 @@ var LoginView = React.createClass({
 		return(
 			<div className="logInContainer">
 
-			<Header />
-
-			
+				<Header />
 
 				<form onSubmit={this._handleLogin}>
 					<h3 className="loginIn">Log In</h3>
@@ -508,8 +509,6 @@ var WelcomeView = React.createClass({
 
 		return(
 			<div className="welcomeContainer">
-
-		
 
 				<div className="contentWrapper"> 
 				<Header/>
