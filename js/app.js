@@ -494,7 +494,7 @@ var LoginView = React.createClass({
 
 var WelcomeView = React.createClass({
 
-	initialize: document.querySelector(body)
+
 
 	_goToSignUp: function(){
 		location.hash = 'signup'
@@ -507,18 +507,23 @@ var WelcomeView = React.createClass({
 	render: function(){
 
 		return(
-			<div>
+			<div className="welcomeContainer">
 
+		
+
+				<div className="contentWrapper"> 
 				<Header/>
 
-				<div className="welcomeSignUpContainer">
-					<h4 className="welcome_SignUpTitle">Join the Family!</h4>
-					<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
-				</div><br/>
+					<div className="welcomeSignUpContainer">
+						<h4 className="welcome_SignUpTitle">Join the Family!</h4>
+						<button onClick={this._goToSignUp} className="signUpButton">Sign Up</button>
+					</div><br/>
 
-				<div className="welcomeLogInContainer">
-					<h4 className="welcome_LogIn">Already a Member?</h4>
-					<button onClick={this._goToLogin} className="logInButton">Log In</button>
+					<div className="welcomeLogInContainer">
+						<h4 className="welcome_LogIn">Already a Member?</h4>
+						<button onClick={this._goToLogin} className="logInButton">Log In</button>
+					</div>
+
 				</div>
 			</div>
 		)
@@ -644,7 +649,7 @@ var SearchLibary = React.createClass({
 					snapshot.forEach(function(obj) {
 						console.log(obj.val().searchTitle)
 						var recipeTitle = obj.val().searchTitle //the result of what is type in the query
-						React.unmountComponentAtNode(document.querySelector('.container'))
+						React.unmountComponentAtNode(document.querySelector('.app'))
 						location.hash = "library/search/" + recipeTitle
 					})
 			})
@@ -701,7 +706,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from authView")
 
-		DOM.render( <SignUpView />, document.querySelector('.container') )
+		DOM.render( <SignUpView />, document.querySelector('.app') )
 
 	},
 
@@ -709,7 +714,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from LoginView")
 
-		DOM.render( <LoginView />, document.querySelector('.container') )
+		DOM.render( <LoginView />, document.querySelector('.app') )
 
 	},
 
@@ -717,7 +722,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from WelcomeVIew")
 
-		DOM.render( <WelcomeView />, document.querySelector('.container') )
+		DOM.render( <WelcomeView />, document.querySelector('.app') )
 
 	},
 
@@ -725,7 +730,7 @@ var AppRouter = BackboneFire.Router.extend({
 
 		console.log("from HomeView")
 
-		DOM.render( <HomeView />, document.querySelector('.container') )
+		DOM.render( <HomeView />, document.querySelector('.app') )
 
 	},
 
@@ -744,7 +749,7 @@ var AppRouter = BackboneFire.Router.extend({
 			userRecipeCollection = new UserRecipeCollection(fbRef.getAuth().uid)
 		}
 
-		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.container') )
+		DOM.render( <RecipeLibraryView recipeColl={userRecipeCollection}/>, document.querySelector('.app') )
 	},
 
 	showSingleRecipe: function(recipeId){
@@ -756,9 +761,9 @@ var AppRouter = BackboneFire.Router.extend({
 
 		var singleRecipeModel_inst = new SingleRecipeModel( fbRef.getAuth().uid, recipeId)
 
-		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.container') )
+		// DOM.render( <SingleReceipeView userRecipes{'ingredients',}/>, document.querySelector('.app') )
     // singleRecipeModel_inst.on("sync", function(data){
-		DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.container') )
+		DOM.render( <SingleReceipeView recipeMdl={singleRecipeModel_inst}/>, document.querySelector('.app') )
 		// })
 	},
 
