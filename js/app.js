@@ -88,12 +88,11 @@ var RecipeLibraryView = React.createClass({
 
 		return(
 				<div className="libraryContainer">
-					<h5 onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </h5>
+					<h5  onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </h5>
 					<button className="removeRecipeButton" onClick={this._handleRemoveRecipe.bind(this, mdl)} >X</button>
 					<div className="recipelibraryPictureContainer">
 						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					</div>
-					
 				</div>
 		)
 	},
@@ -319,11 +318,15 @@ var HomeView = React.createClass({
 
 		console.log(userRecipeCollection)
 		
-		this.state.imageFileData = " "
+		///this.state.imageFileData = " "
 		evt.target.displayTitle.value = " "
 		evt.target.ingredientsText.value = " "
 		evt.target.instructionText.value = " "
 		evt.target.equipmentText.value = " "
+		this.refs.imgInputFile.src = ''
+		this.refs.imgInputTag.value = ''
+
+
 	},
 
 	// _handleLogOut: function(){
@@ -352,6 +355,8 @@ var HomeView = React.createClass({
   		}, 
   		// false
   		);
+  		this.refs.imgInputFile.src = ''
+  		this.refs.imgInputTag.value = ''
 
 	},
 
@@ -385,10 +390,10 @@ var HomeView = React.createClass({
 					<textarea className="u-full-width" type="text" id="instructionText" placeholder="Enter your instructions"/><br/>
 
 					<h4>Add Image</h4>
-					<input type="file" id="imageInput" onChange={this._handlePicture}/><br/>
+					<input type="file" ref="imgInputTag" id="imageInput" onChange={this._handlePicture}/><br/>
 
 					<div className="previewImgContainer">
-						<img src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
+						<img ref="imgInputFile" src={this.state.imageFileData}/> {/*--this.state.imageFileData is the selected image file from _handlePicture*/}	
 					</div>
 
 

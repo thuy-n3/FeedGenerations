@@ -125,8 +125,13 @@ fieldset, input, select, textarea {
 }
 
  .columns.only {
-    margin-left: 0
+    margin-left: 0px;
  }
+
+.libRecipeTitle{
+    display: inline-block;
+}
+
 
 /**
  * App code
@@ -235,4 +240,6 @@ fieldset, input, select, textarea {
     padding-top: 4%;
 }
 
-
+.libraryContainer{ 
+    display: inline-block;
+}
