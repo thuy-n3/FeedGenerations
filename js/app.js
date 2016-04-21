@@ -319,6 +319,11 @@ var HomeView = React.createClass({
 
 		console.log(userRecipeCollection)
 		
+		this.state.imageFileData = " "
+		evt.target.displayTitle.value = " "
+		evt.target.ingredientsText.value = " "
+		evt.target.instructionText.value = " "
+		evt.target.equipmentText.value = " "
 	},
 
 	// _handleLogOut: function(){
