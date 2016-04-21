@@ -62,6 +62,8 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 	}
 })
 
+
+
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
@@ -75,18 +77,28 @@ var RecipeLibraryView = React.createClass({
 		window.location.hash = "library/" + id 
 	},
 
+	_handleRemoveRecipe: function(mdl, evt){
+        console.log("model id ", mdl)
+        this.props.recipeColl.remove(mdl)
+    },
+
+
 	_showRecipesJSX: function(mdl){
 		if (!mdl.id) return ''
 
 		return(
 				<div className="libraryContainer">
 					<h5 onClick= {this._goToRecipeView.bind(this, mdl.id)} > {mdl.get("displayTitle")} </h5>
+					<button className="removeRecipeButton" onClick={this._handleRemoveRecipe.bind(this, mdl)} >X</button>
 					<div className="recipelibraryPictureContainer">
 						<img className="libraryViewPicture" src={mdl.get("picture")} onClick= {this._goToRecipeView.bind(this, mdl.id)} /> 
 					</div>
+					
 				</div>
 		)
 	},
+
+
 
 	componentDidMount: function(){
 		var component = this 
@@ -101,6 +113,8 @@ var RecipeLibraryView = React.createClass({
 		})
 	}, 
 
+
+
 	render: function(){ 
 
 		var component = this
@@ -109,8 +123,9 @@ var RecipeLibraryView = React.createClass({
 				<Header />
 				<NavBar />
 				<SearchLibary />
-				<h2>Recipe Library</h2>
+				<h2 id="libraryTitle">Recipe Library</h2>
 
+				
 			{/*	<form onSubmit={this._handleSearchSubmit}>
 								<input type='text' id="searchlibrary" placeholder='search library' />
 								<input className='button-primary' type='submit' value='submit' />
@@ -119,6 +134,9 @@ var RecipeLibraryView = React.createClass({
 							</form>*/}
 
 				{this.props.recipeColl.models.map(component._showRecipesJSX)}
+
+
+
 
 			</div>
 		)
@@ -181,6 +199,17 @@ var SingleReceipeView = React.createClass({
 			})
 	},
 
+	_handleEquipment: function(){
+		if(this.state.userRecipes.equipment){
+			return (
+				<div>
+					<h4>Equipment</h4>
+					{this.state.userRecipes.equipment}
+				</div>
+				)
+		}
+	},
+
 	render: function(){
 
 		var component = this 
@@ -226,11 +255,12 @@ var SingleReceipeView = React.createClass({
 				
 				<h4>Ingredients</h4>
 				<ul>{ingredientasLi_elements}</ul>
-				<h4>Equipment</h4>
-				{this.state.userRecipes.equipment}
-				<h4>Instructions</h4>
-					
 
+				{this._handleEquipment()}
+				{/*{this.state.userRecipes.equipment}*/}
+
+
+				<h4>Instructions</h4>
 				{instructionsAsP_elements}
 				
 				
@@ -326,7 +356,7 @@ var HomeView = React.createClass({
 			<div className="container">
 				<Header />
 				<NavBar />
-				<h3 className="welcomeTitle">Welcome Home!  </h3>
+				<h3 className="welcomeTitle">Welcome Home! </h3>
 				{/*{fbRef.getAuth().uid}*/}
 
 
@@ -435,7 +465,7 @@ var SignUpView = React.createClass({
 						<input type="text" id="name" placeholder="Name" /><br/>
 						<input type="text" id="email" placeholder="Email" /><br/>
 						<input type="password" id="password" placeholder="Password" /><br/>
-						<input className="button-primary" type="submit" defaultValue="Log In" /><br/> 
+						<input className="button-primary" type="submit" defaultValue="Sign Up" /><br/> 
 
 					</form>	
 
