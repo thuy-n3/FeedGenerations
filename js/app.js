@@ -317,8 +317,12 @@ var HomeView = React.createClass({
 
 		})
 
-		console.log(userRecipeCollection)
-		
+		console.log('userRecipeCollection', userRecipeCollection)
+		this.state.imageFileData = " "
+		evt.target.displayTitle.value = " "
+		evt.target.ingredientsText.value = " "
+		evt.target.equipmentText.value = " "
+		evt.target.instructionText.value = " "
 	},
 
 	// _handleLogOut: function(){
@@ -353,7 +357,7 @@ var HomeView = React.createClass({
 
 	render:function(){
 		return(
-			<div className="container">
+			<div className="homeContainer container">
 				<Header />
 				<NavBar />
 				<h3 className="welcomeTitle">Welcome Home! </h3>
