@@ -72,8 +72,6 @@ var UserModel = BackboneFire.Firebase.Model.extend({
 })
 
 
-
-
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
@@ -335,8 +333,6 @@ var HomeView = React.createClass({
 
 					<input className="button-primary" type="submit" value="submit"/><br/>
 
-					
-
 				</form>
 
 			</div>	
@@ -459,8 +455,28 @@ var SetFamilyView = React.createClass({
 		)
 	}
 
+	
 
 })
+
+
+
+
+
+var FamilyView = React.createClass({
+
+	render: function(){
+		return (
+			<div>
+				<p>family view</p>
+			</div>
+		)
+	}
+
+
+})
+
+
 
 var LoginView = React.createClass({
 
@@ -669,6 +685,7 @@ var AppRouter = BackboneFire.Router.extend({
 		"login"		         			: "showLoginView",
 		"welcome"						: "showWelcome",
 		"setfamily"						: "showSetFamily",
+		"family"						: "showFamilyView",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
@@ -703,6 +720,13 @@ var AppRouter = BackboneFire.Router.extend({
 		DOM.render( <SetFamilyView />, document.querySelector('.container') )
 
 	}, 
+
+	showFamilyView: function(){	
+
+		console.log("from FamilyView")
+		DOM.render( <FamilyView />, document.querySelector('.container'))
+
+	},
 
 	showWelcome: function(){
 
