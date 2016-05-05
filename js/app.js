@@ -64,6 +64,49 @@ var SingleRecipeModel = BackboneFire.Firebase.Model.extend({
 
 
 
+
+var FamilyView = React.createClass({
+	render: function(){
+		return(
+			<div className="container">
+				
+				<Header />
+				<NavBar />
+
+				<h2 id="familyTitle">Welcome to the Family</h2>
+
+				<div className="createFamContainer">
+					<input className="createFamInput" type="text" placeholder="create family"/>
+					<input className="button-primary" type="submit" value="submit"/>
+				</div>
+
+			</div>
+		)
+	}
+})
+
+var AddFamily = React.createClass({
+
+	_createFamily: function(){
+
+	}, 
+
+	_saveFamily: function(){
+		
+	}
+
+
+
+})
+
+
+
+
+
+
+
+
+
 var RecipeLibraryView = React.createClass({
 
 	getInitialState: function(){
@@ -607,13 +650,16 @@ var NavBar = React.createClass({
 		window.location.hash = 'home'
 	},
 	
+	_handleFamily: function(){
+		window.location.hash = 'family'
+	},
 
 	render: function(){
 		return(
 			<div className="navContainer ">
 				<button className="home" onClick={this._handleHome}>Home</button>
 				<button className="library" onClick={this._handleLibrary}>Library</button>
-				<button className="family" >Family</button>
+				<button className="family" onClick={this._handleFamily} >Family</button>
 				<button className="logOut" onClick={this._handleLogOut}>Log Out</button>
 			</div>
 		)
@@ -732,6 +778,7 @@ var AppRouter = BackboneFire.Router.extend({
 		"signup"	         			: "showSignUpView",
 		"login"		         			: "showLoginView",
 		"welcome"						: "showWelcome",
+		"family"						: "showFamily",
 		"library/search/:query"   		: "showRecipeLibrary",
 		"library/:recipeId"				: "showSingleRecipe",
 		"library"          				: "showRecipeLibrary",
@@ -775,7 +822,14 @@ var AppRouter = BackboneFire.Router.extend({
 
 	},
 
-	
+	showFamily: function(){
+
+		console.log("from FamilyView")
+
+		DOM.render( <FamilyView />, document.querySelector('.app') )
+
+	},
+
 	showRecipeLibrary: function(query){
 
 		console.log("from RecipeLibraryView")
